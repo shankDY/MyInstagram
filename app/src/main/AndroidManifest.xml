@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    package="com.shank.myinstagram">
+
+    <!-- данное разрешение говорит, то наше приложение юзает камеру, и если у пользователя нет
+    на телефоне камеры, то он не сможет поставить наше приложение
+     при налиичии true android:required -->
+    <uses-feature android:name="android.hardware.camera"
+        android:required="true" />
+    <uses-permission android:name="android.permission.INTERNET"/>
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE"/>
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+
+    <application
+        android:allowBackup="true"
+        android:icon="@drawable/ic_myinstagram"
+        android:label="@string/app_name"
+        android:supportsRtl="true"
+        android:theme="@style/AppTheme">
+        <activity android:name=".activities.bottomActivities.HomeActivity">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+        <activity android:name=".activities.bottomActivities.SearchActivity" />
+        <activity android:name=".activities.bottomActivities.ShareActivity" />
+        <activity android:name=".activities.otherActivities.LikesActivity" />
+        <activity android:name=".activities.bottomActivities.ProfileActivity" />
+        <activity android:name=".activities.otherActivities.EditProfileActivity" />
+        <activity
+            android:name=".activities.authentication.LoginActivity"
+            android:windowSoftInputMode="stateVisible|adjustResize" />
+        <activity
+            android:name=".activities.authentication.RegisterActivity"
+            android:windowSoftInputMode="stateVisible|adjustResize" />
+
+        <activity android:name=".activities.otherActivities.ProfileSettingsActivity"/>
+        <activity android:name=".activities.otherActivities.AddFriendsActivity"/>
+
+        <provider
+            android:name="android.support.v4.content.FileProvider"
+            android:authorities="com.shank.myinstagram.fileprovider"
+            android:exported="false"
+            android:grantUriPermissions="true">
+            <meta-data
+                android:name="android.support.FILE_PROVIDER_PATHS"
+                android:resource="@xml/file_paths"/>
+        </provider>
+
+
+    </application>
+
+</manifest>

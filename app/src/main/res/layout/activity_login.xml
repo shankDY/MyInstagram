@@ -1,0 +1,55 @@
+<com.shank.myinstagram.views.KeyboardAwareScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/scroll_view_log_In">
+
+    <android.support.constraint.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        tools:context=".activities.authentication.LoginActivity">
+
+        <ImageView
+            android:id="@+id/instagram_image"
+            android:layout_width="match_parent"
+            android:layout_height="110dp"
+            android:layout_marginEnd="50dp"
+            android:layout_marginStart="50dp"
+            android:layout_marginTop="50dp"
+            android:src="@drawable/instagram_logo"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <EditText
+            android:id="@+id/email_input"
+            style="@style/big_input"
+            android:layout_marginTop="40dp"
+            android:hint="@string/hint_email"
+            android:inputType="textEmailAddress"
+            app:layout_constraintTop_toBottomOf="@id/instagram_image" />
+
+        <EditText
+            android:id="@+id/password_input"
+            style="@style/big_input"
+            android:hint="@string/hint_pass"
+            android:inputType="textPassword"
+            app:layout_constraintTop_toBottomOf="@id/email_input" />
+
+        <Button
+            android:id="@+id/login_btn"
+            style="@style/big_btn"
+            android:text="@string/log_in_btn_text"
+            app:layout_constraintTop_toBottomOf="@id/password_input" />
+
+        <TextView
+            android:id="@+id/create_account_text"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/toolbar_height"
+            android:background="@drawable/top_border_grey"
+            android:gravity="center"
+            android:text="@string/singUp"
+            app:layout_constraintBottom_toBottomOf="parent" />
+
+    </android.support.constraint.ConstraintLayout>
+
+</com.shank.myinstagram.views.KeyboardAwareScrollView>
