@@ -1,11 +1,11 @@
-package com.shank.myinstagram.activities.recycler_adapters
+package com.shank.myinstagram.activities.addfriends
 
 import android.support.v7.widget.RecyclerView
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import com.shank.myinstagram.R
-import com.shank.myinstagram.model.Users
+import com.shank.myinstagram.model.User
 import com.shank.myinstagram.utils.loadUserPhoto
 import kotlinx.android.synthetic.main.add_friends_item.view.*
 
@@ -20,7 +20,7 @@ class FriendsAdapter(private val listener: Listener)
         fun unfollow(uid: String)
     }
 
-    private var mUsers = listOf<Users>() //список пользователей
+    private var mUsers = listOf<User>() //список пользователей
     private var mPositions = mapOf<String, Int>()
     //картаФоловеров(ключ - uid, значени true или false)
     private var mFollows = mapOf<String, Boolean>()
@@ -58,7 +58,7 @@ class FriendsAdapter(private val listener: Listener)
     //размер списка
     override fun getItemCount() = mUsers.size
 
-    fun update(users: List<Users>, follows: Map<String, Boolean>) {
+    fun update(users: List<User>, follows: Map<String, Boolean>) {
         mUsers = users // получаем список пользователей
         //сохраняем позиции . юзеров(индексы в списке.) в карту. т.е ключи у нас будут uid юзера
         //значение позиция юзера в списке

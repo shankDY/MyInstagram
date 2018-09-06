@@ -6,15 +6,15 @@ import android.support.v7.app.AppCompatActivity
 import android.util.Log
 import com.google.firebase.auth.EmailAuthProvider
 import com.shank.myinstagram.R
-import com.shank.myinstagram.model.Users
+import com.shank.myinstagram.model.User
 import com.shank.myinstagram.utils.*
 import com.shank.myinstagram.views.PasswordDialog
 import kotlinx.android.synthetic.main.activity_edit_profile.*
 
 class EditProfileActivity : AppCompatActivity(), PasswordDialog.Listener {
     private val TAG = "EditProfileActivity"
-    private lateinit var mPendingUser: Users // юзер ожидающий изменения
-    private lateinit var mUser: Users
+    private lateinit var mPendingUser: User // юзер ожидающий изменения
+    private lateinit var mUser: User
     private lateinit var mFirebase: FirebaseHelper
     private lateinit var mCamera: CameraHelper
 
@@ -40,7 +40,7 @@ class EditProfileActivity : AppCompatActivity(), PasswordDialog.Listener {
         // в firebase берем users и в ней берем по id юзеров
 
         mFirebase.currentUserReference().addListenerForSingleValueEvent(ValueEventListenerAdapter {
-            // когда мы получим ответ с firebase, то переконвертируем в удобный нам объект(class Users)
+            // когда мы получим ответ с firebase, то переконвертируем в удобный нам объект(class User)
             mUser = it.asUser()!!
             //мы получаем данные с бд и проставляем их в наши editText
             //.EDITABLE можно не использовать, т.к и т.к в editText Buffer type
@@ -104,8 +104,8 @@ class EditProfileActivity : AppCompatActivity(), PasswordDialog.Listener {
     }
 
     //читаем с editText данные введенные пользователем и помещаем в наш DAO
-private fun readInputs(): Users {
-        return Users(
+private fun readInputs(): User {
+        return User(
                 name = name_input.text.toString(),
                 username = username_input.text.toString(),
                 email = email_input.text.toString(),
@@ -146,7 +146,7 @@ private fun readInputs(): Users {
         обновление полей юзера , которые изменились
         если поле изменилось мы добавляем элемент в карту и  сохраняем изменение в базу
      **/
-    private fun updateUser(user: Users) {
+    private fun updateUser(user: User) {
 
         val updatesMap = mutableMapOf<String,Any?>()
 
@@ -164,7 +164,7 @@ private fun readInputs(): Users {
     }
 
     //если все поля заполнены возращаем null, иначе ошибку
-    private fun validate(user: Users): String? = when{
+    private fun validate(user: User): String? = when{
                 user.name.isEmpty() -> getString(R.string.please_enter_name)
                 user.username.isEmpty() -> getString(R.string.please_enter_username)
                 user.email.isEmpty() -> getString(R.string.please_enter_email)

@@ -38,7 +38,7 @@
             android:windowSoftInputMode="stateVisible|adjustResize" />
 
         <activity android:name=".activities.otherActivities.ProfileSettingsActivity"/>
-        <activity android:name=".activities.otherActivities.AddFriendsActivity"/>
+        <activity android:name=".activities.addfriends.AddFriendsActivity"/>
 
         <provider
             android:name="android.support.v4.content.FileProvider"

@@ -11,10 +11,10 @@ import android.view.LayoutInflater
 import android.view.ViewGroup
 import android.widget.ImageView
 import com.shank.myinstagram.R
-import com.shank.myinstagram.activities.otherActivities.AddFriendsActivity
+import com.shank.myinstagram.activities.addfriends.AddFriendsActivity
 import com.shank.myinstagram.activities.otherActivities.EditProfileActivity
 import com.shank.myinstagram.activities.otherActivities.ProfileSettingsActivity
-import com.shank.myinstagram.model.Users
+import com.shank.myinstagram.model.User
 import com.shank.myinstagram.utils.*
 import kotlinx.android.synthetic.main.activity_profile.*
 
@@ -22,7 +22,7 @@ class ProfileActivity : BaseActivity(4) {
     private val TAG = "ProfileActivity"
     private lateinit var mFirebase: FirebaseHelper
 
-    private lateinit var mUser: Users
+    private lateinit var mUser: User
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)

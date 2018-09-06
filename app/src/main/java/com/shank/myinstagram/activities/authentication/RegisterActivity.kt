@@ -16,7 +16,7 @@ import com.google.firebase.database.DatabaseReference
 import com.google.firebase.database.FirebaseDatabase
 import com.shank.myinstagram.R
 import com.shank.myinstagram.activities.bottomActivities.HomeActivity
-import com.shank.myinstagram.model.Users
+import com.shank.myinstagram.model.User
 import com.shank.myinstagram.utils.coordinateBtnAndInputs
 import com.shank.myinstagram.utils.showToast
 import kotlinx.android.synthetic.main.fragment_register_email.*
@@ -126,9 +126,9 @@ class RegisterActivity : AppCompatActivity(),EmailFragment.Listener,NamePassFrag
 
 
 
-    private fun mkUser(fullname: String, email: String): Users{
+    private fun mkUser(fullname: String, email: String): User{
         val username = mkUsername(fullname)
-        return Users(name = fullname,username = username, email = email)
+        return User(name = fullname,username = username, email = email)
     }
 
     //пока сделаем такую убогую логику)
@@ -138,7 +138,7 @@ class RegisterActivity : AppCompatActivity(),EmailFragment.Listener,NamePassFrag
 
     //Функции расширения createUser, createUserWithEmailAndPassword, которые обрабатывает
     // наши колбеки  и говорят, что все прошло успешно(isSuccessfull) или нет
-    private fun  DatabaseReference.createUser(uid: String, user: Users, onSuccess: () -> Unit){
+    private fun  DatabaseReference.createUser(uid: String, user: User, onSuccess: () -> Unit){
         //создаем профиль пользователя
         val reference = child("users").child(uid)
         reference.setValue(user).addOnCompleteListener{

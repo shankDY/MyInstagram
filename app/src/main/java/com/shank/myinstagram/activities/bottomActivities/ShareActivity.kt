@@ -5,7 +5,7 @@ import android.os.Bundle
 import android.util.Log
 import com.shank.myinstagram.R
 import com.shank.myinstagram.model.FeedPost
-import com.shank.myinstagram.model.Users
+import com.shank.myinstagram.model.User
 import com.shank.myinstagram.utils.*
 import kotlinx.android.synthetic.main.activity_share.*
 
@@ -13,7 +13,7 @@ class ShareActivity : BaseActivity(2) {
     private val TAG = "ShareActivity"
     private lateinit var mCamera: CameraHelper
     private lateinit var mFirebase: FirebaseHelper
-    private lateinit var mUser: Users
+    private lateinit var mUser: User
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)

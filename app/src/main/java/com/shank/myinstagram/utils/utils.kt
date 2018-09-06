@@ -1,6 +1,8 @@
 package com.shank.myinstagram.utils
 
 import android.app.Activity
+import android.arch.lifecycle.LiveData
+import android.arch.lifecycle.Transformations
 import android.content.Context
 import android.text.Editable
 import android.text.TextWatcher
@@ -15,7 +17,7 @@ import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseReference
 import com.shank.myinstagram.R
 import com.shank.myinstagram.model.FeedPost
-import com.shank.myinstagram.model.Users
+import com.shank.myinstagram.model.User
 
 
 //данная функция екстеншен(Расширение) класса Context. А классы Context наследуют все Активити
@@ -91,8 +93,13 @@ fun <T> task (block: (TaskCompletionSource<T>)-> Unit): Task<T> {
 }
 
 //функция расширения, с помощью которой получаем uid юзера
-fun DataSnapshot.asUser(): Users? =
-        getValue(Users::class.java)?.copy(uid = key!!)
+fun DataSnapshot.asUser(): User? =
+        getValue(User::class.java)?.copy(uid = key!!)
 
 fun DataSnapshot.asFeedPost(): FeedPost? =
         getValue(FeedPost::class.java)?.copy(id = key!!)
+
+//функция расширения, которая сконвертирует LiveData<Snapshot> в LiveData<Pair<User , List<User>>>
+// , для любого типа А , функция(f) которая принимает А и вовращает B
+fun <A,B> LiveData<A>.map(f:(A) -> B): LiveData<B> =
+        Transformations.map(this,f)
