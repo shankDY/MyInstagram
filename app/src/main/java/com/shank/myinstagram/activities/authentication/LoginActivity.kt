@@ -7,7 +7,7 @@ import android.util.Log
 import android.view.View
 import com.shank.myinstagram.R
 import com.shank.myinstagram.activities.bottomActivities.HomeActivity
-import com.shank.myinstagram.utils.FirebaseHelper
+import com.shank.myinstagram.utils.auth
 import com.shank.myinstagram.utils.coordinateBtnAndInputs
 import com.shank.myinstagram.utils.showToast
 import kotlinx.android.synthetic.main.activity_login.*
@@ -17,15 +17,12 @@ import net.yslibrary.android.keyboardvisibilityevent.KeyboardVisibilityEventList
 class LoginActivity : AppCompatActivity(), KeyboardVisibilityEventListener, View.OnClickListener {
 
     private val TAG = "LoginActivity"
-    private lateinit var mFirebase: FirebaseHelper
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_login)
         Log.d(TAG, "onCreate")
 
-        //вспомогательный класс, который поможет нам работать с firebase
-        mFirebase = FirebaseHelper(this)
 
         //подключаем слушатель , который следит за положением клавиатуры
         KeyboardVisibilityEvent.setEventListener(this,this)
@@ -61,7 +58,7 @@ class LoginActivity : AppCompatActivity(), KeyboardVisibilityEventListener, View
                 val email = email_input.text.toString()
                 val password = password_input.text.toString()
                 if (validate(email, password)) {
-                    mFirebase.auth.signInWithEmailAndPassword(email, password)
+                    auth.signInWithEmailAndPassword(email, password)
                             .addOnCompleteListener {
                         if (it.isSuccessful) {
                             startActivity(Intent(this, HomeActivity::class.java))

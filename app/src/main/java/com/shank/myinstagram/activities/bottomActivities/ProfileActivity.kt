@@ -11,7 +11,7 @@ import android.view.LayoutInflater
 import android.view.ViewGroup
 import android.widget.ImageView
 import com.shank.myinstagram.R
-import com.shank.myinstagram.activities.addfriends.AddFriendsActivity
+import com.shank.myinstagram.activities.otherActivities.AddFriendsActivity
 import com.shank.myinstagram.activities.otherActivities.EditProfileActivity
 import com.shank.myinstagram.activities.otherActivities.ProfileSettingsActivity
 import com.shank.myinstagram.model.User
@@ -62,7 +62,7 @@ class ProfileActivity : BaseActivity(4) {
         /*мы запрашиваем список (пути картинок в хранилище), у каждого списка ,
         есть уникальныйи ключ(id юзера) и значение(пути картинок),
         мы берем и  кастим значения к String. */
-        mFirebase.database.child("images").child(mFirebase.currentUid()!!).
+        database.child("images").child(currentUid()!!).
                 addValueEventListener(ValueEventListenerAdapter{ it ->
                     val images = it.children.map { it.getValue(String::class.java)!!}
                     images_recycler.adapter = ImagesAdapter(images)

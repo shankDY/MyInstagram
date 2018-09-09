@@ -29,7 +29,7 @@
     <ImageView
         android:id="@+id/more_image"
         style="@style/icon"
-        android:src="@drawable/ic_more"
+        android:src="@mipmap/ic_more"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="@id/user_photo_image"
         app:layout_constraintBottom_toBottomOf="@id/user_photo_image"/>

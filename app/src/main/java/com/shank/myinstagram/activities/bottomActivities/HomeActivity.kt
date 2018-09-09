@@ -7,18 +7,14 @@ import android.util.Log
 import com.google.firebase.database.ValueEventListener
 import com.shank.myinstagram.R
 import com.shank.myinstagram.activities.authentication.LoginActivity
-import com.shank.myinstagram.activities.recycler_adapters.FeedAdapter
-import com.shank.myinstagram.utils.FirebaseHelper
-import com.shank.myinstagram.utils.ValueEventListenerAdapter
-import com.shank.myinstagram.utils.asFeedPost
-import com.shank.myinstagram.utils.setValueTrue0rRemove
+import com.shank.myinstagram.adapters.FeedAdapter
+import com.shank.myinstagram.utils.*
 import kotlinx.android.synthetic.main.activity_home.*
 
 class HomeActivity : BaseActivity(0), FeedAdapter.Listener {
 
     private val TAG = "HomeActivity"
     // ленивая инициализация( т.е инициализация произойдет позже)
-    private lateinit var mFirebase: FirebaseHelper
     private lateinit var mAdapter: FeedAdapter // recyclerView adapter для постов юзеров
     //карта слушателей(для проверки, вызван листанер или нет)
     private var mLikesListeners: Map<String, ValueEventListener> = emptyMap()
@@ -30,12 +26,11 @@ class HomeActivity : BaseActivity(0), FeedAdapter.Listener {
         Log.d(TAG, "onCreate")
         setupBottomNavigation()
 
-        mFirebase = FirebaseHelper(this)
 
 
 
-        mFirebase.auth.addAuthStateListener {
-            if ( mFirebase.auth.currentUser == null){
+        auth.addAuthStateListener {
+            if ( auth.currentUser == null){
                 startActivity(Intent(this, LoginActivity::class.java))
                 finish() // убиваем активити
             }
@@ -44,12 +39,12 @@ class HomeActivity : BaseActivity(0), FeedAdapter.Listener {
 
     override fun onStart() {
         super.onStart()
-        val currentUser = mFirebase.auth.currentUser
+        val currentUser = auth.currentUser
         if ( currentUser == null){
             startActivity(Intent(this, LoginActivity::class.java))
             finish() // убиваем активити
         }else{
-            mFirebase.database.child("feed-posts").child(currentUser.uid)
+            database.child("feed-posts").child(currentUser.uid)
                     .addValueEventListener(ValueEventListenerAdapter{
                         val posts = it.children.map { it.asFeedPost()!! }
                                 //сортируем посты по дате добавления
@@ -64,8 +59,8 @@ class HomeActivity : BaseActivity(0), FeedAdapter.Listener {
     override fun toogleLike(postId: String) {
         Log.d(TAG, "toogleLike: $postId")
         //получаем ссылку на место хранения лайков
-        val reference = mFirebase.database.child("likes").child(postId)
-                .child(mFirebase.currentUid()!!)
+        val reference = database.child("likes").child(postId)
+                .child(currentUid()!!)
         reference.addListenerForSingleValueEvent(ValueEventListenerAdapter{
             //если нода существует(поставили уже лайк), то удаляем лайк, иначе
             // записываем его в бд
@@ -78,7 +73,7 @@ class HomeActivity : BaseActivity(0), FeedAdapter.Listener {
 
         fun createListener() =
         //вычитываем позиции лайков для постов
-                mFirebase.database.child("likes").child(postId).addValueEventListener(
+                database.child("likes").child(postId).addValueEventListener(
                         ValueEventListenerAdapter{
 
                             //id юзеров, пролайковших пост(количество id будет соответствовать
@@ -89,7 +84,7 @@ class HomeActivity : BaseActivity(0), FeedAdapter.Listener {
                             // значит мы пролайкали этот пост
                             val postLikes = FeedPostLikes(
                                     userLikes.size,
-                                    userLikes.contains(mFirebase.currentUid()))
+                                    userLikes.contains(currentUid()))
                             mAdapter.updatePostLikes( position, postLikes)
                         })
 
@@ -107,7 +102,7 @@ class HomeActivity : BaseActivity(0), FeedAdapter.Listener {
     override fun onDestroy() {
         super.onDestroy()
         //получаем список наших лисенеров и удаляем их при разрушении активити
-        mLikesListeners.values.forEach { mFirebase.database.removeEventListener(it) }
+        mLikesListeners.values.forEach { database.removeEventListener(it) }
     }
 }
 

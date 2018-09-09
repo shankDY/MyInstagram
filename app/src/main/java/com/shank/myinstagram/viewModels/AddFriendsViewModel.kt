@@ -1,9 +1,10 @@
-package com.shank.myinstagram.activities.addfriends
+package com.shank.myinstagram.viewModels
 
 import android.arch.lifecycle.LiveData
 import android.arch.lifecycle.ViewModel
 import com.google.android.gms.tasks.Task
 import com.google.android.gms.tasks.Tasks
+import com.shank.myinstagram.repositories.AddFriendsRepository
 import com.shank.myinstagram.model.User
 import com.shank.myinstagram.utils.map
 

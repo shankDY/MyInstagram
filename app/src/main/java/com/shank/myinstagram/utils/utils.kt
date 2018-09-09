@@ -13,6 +13,7 @@ import android.widget.ImageView
 import android.widget.Toast
 import com.google.android.gms.tasks.Task
 import com.google.android.gms.tasks.TaskCompletionSource
+import com.google.android.gms.tasks.Tasks
 import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseReference
 import com.shank.myinstagram.R
@@ -21,8 +22,8 @@ import com.shank.myinstagram.model.User
 
 
 //данная функция екстеншен(Расширение) класса Context. А классы Context наследуют все Активити
-fun Context.showToast(text:String, duration: Int = Toast.LENGTH_SHORT ){
-    Toast.makeText(this,text,duration ).show()
+fun Context.showToast(text:String?, duration: Int = Toast.LENGTH_SHORT ){
+    text?.let{Toast.makeText(this,it,duration ).show()}
 }
 
 //фукция расширения для EditText, которая вернет null(в бд будет пустая строка),
@@ -103,3 +104,6 @@ fun DataSnapshot.asFeedPost(): FeedPost? =
 // , для любого типа А , функция(f) которая принимает А и вовращает B
 fun <A,B> LiveData<A>.map(f:(A) -> B): LiveData<B> =
         Transformations.map(this,f)
+
+//переконвертировали Task<Void> в Task<Unit>
+fun Task<Void>.toUnit(): Task<Unit> = onSuccessTask { Tasks.forResult(Unit) }

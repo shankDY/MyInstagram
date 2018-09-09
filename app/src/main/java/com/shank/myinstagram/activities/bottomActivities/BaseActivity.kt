@@ -1,6 +1,8 @@
 package com.shank.myinstagram.activities.bottomActivities
 
 import android.content.Intent
+import android.content.pm.ActivityInfo
+import android.os.Bundle
 import android.support.v7.app.AppCompatActivity
 import android.util.Log
 import com.shank.myinstagram.R
@@ -8,9 +10,14 @@ import com.shank.myinstagram.activities.otherActivities.LikesActivity
 import kotlinx.android.synthetic.main.bottom_navigation_view.*
 
 
-// потом переделать все это с помощью фрагментов
 abstract class BaseActivity(val navNumber: Int) : AppCompatActivity() {
-    private val TAG = "BaseActivity"
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        //отключаем смену ориентации экрана на книжную, для того,
+        // чтобы активити так часто не убивались
+        requestedOrientation = ActivityInfo.SCREEN_ORIENTATION_PORTRAIT
+    }
 
     fun setupBottomNavigation() {
         bottom_navigation_view.setIconSize(29f, 29f) //размер иконки navigationBottom
@@ -59,5 +66,10 @@ abstract class BaseActivity(val navNumber: Int) : AppCompatActivity() {
             //делает текущим тот навигейшен итем,который сейчас открыт
             bottom_navigation_view.menu.getItem(navNumber).isChecked = true
         }
+    }
+
+    //храним все статические переменные класса в данном объекте
+    companion object {
+        const val TAG = "BaseActivity"
     }
 }

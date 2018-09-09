@@ -39,8 +39,8 @@ class ShareActivity : BaseActivity(2) {
         if (imageUri != null) {
             //upload image to user folder <- storage
             //lastPathSegment - имя файла
-            val uid = mFirebase.currentUid()!!
-            val ref_users_image = mFirebase.storage.child("users").child(uid).child("images")
+            val uid = currentUid()!!
+            val ref_users_image = storage.child("users").child(uid).child("images")
                     .child(imageUri.lastPathSegment)
             ref_users_image.putFile(imageUri).addOnCompleteListener { it ->
                 if (it.isSuccessful) {
@@ -49,10 +49,10 @@ class ShareActivity : BaseActivity(2) {
                             //получаем ссылку на загруженные фотки в storage
                             val url_users_images = it.result!!.toString()
                             //add image to user images <- db
-                            mFirebase.database.child("images").child(uid).push()
+                            database.child("images").child(uid).push()
                                     .setValue(url_users_images).addOnCompleteListener {
                                 if (it.isSuccessful) {
-                                    mFirebase.database.child("feed-posts").child(uid)
+                                    database.child("feed-posts").child(uid)
                                             .push()
                                             .setValue(mkFeedPost(uid, url_users_images))
                                             .addOnCompleteListener {
