@@ -105,5 +105,3 @@ fun DataSnapshot.asFeedPost(): FeedPost? =
 fun <A,B> LiveData<A>.map(f:(A) -> B): LiveData<B> =
         Transformations.map(this,f)
 
-//переконвертировали Task<Void> в Task<Unit>
-fun Task<Void>.toUnit(): Task<Unit> = onSuccessTask { Tasks.forResult(Unit) }

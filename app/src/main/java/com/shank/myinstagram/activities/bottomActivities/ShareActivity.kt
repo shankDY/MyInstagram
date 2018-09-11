@@ -7,9 +7,10 @@ import com.shank.myinstagram.R
 import com.shank.myinstagram.model.FeedPost
 import com.shank.myinstagram.model.User
 import com.shank.myinstagram.utils.*
+import com.shank.myinstagram.views.setupBottomNavigation
 import kotlinx.android.synthetic.main.activity_share.*
 
-class ShareActivity : BaseActivity(2) {
+class ShareActivity : BaseActivity() {
     private val TAG = "ShareActivity"
     private lateinit var mCamera: CameraHelper
     private lateinit var mFirebase: FirebaseHelper
@@ -19,6 +20,7 @@ class ShareActivity : BaseActivity(2) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_share)
         Log.d(TAG, "onCreate")
+
 
         mFirebase = FirebaseHelper(this)
 

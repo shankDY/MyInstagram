@@ -16,9 +16,10 @@ import com.shank.myinstagram.activities.otherActivities.EditProfileActivity
 import com.shank.myinstagram.activities.otherActivities.ProfileSettingsActivity
 import com.shank.myinstagram.model.User
 import com.shank.myinstagram.utils.*
+import com.shank.myinstagram.views.setupBottomNavigation
 import kotlinx.android.synthetic.main.activity_profile.*
 
-class ProfileActivity : BaseActivity(4) {
+class ProfileActivity : BaseActivity() {
     private val TAG = "ProfileActivity"
     private lateinit var mFirebase: FirebaseHelper
 
@@ -27,7 +28,7 @@ class ProfileActivity : BaseActivity(4) {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_profile)
-        setupBottomNavigation()
+        setupBottomNavigation(4)
         Log.d(TAG, "onCreate")
 
         edit_profile_btn.setOnClickListener {

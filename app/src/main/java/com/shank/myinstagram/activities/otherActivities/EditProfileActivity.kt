@@ -7,6 +7,7 @@ import android.os.Bundle
 import android.support.v7.app.AppCompatActivity
 import android.util.Log
 import com.shank.myinstagram.R
+import com.shank.myinstagram.activities.bottomActivities.BaseActivity
 import com.shank.myinstagram.model.User
 import com.shank.myinstagram.utils.*
 import com.shank.myinstagram.viewModels.EditProfileViewModel
@@ -14,7 +15,7 @@ import com.shank.myinstagram.viewModels.ViewModelFactory
 import com.shank.myinstagram.views.PasswordDialog
 import kotlinx.android.synthetic.main.activity_edit_profile.*
 
-class EditProfileActivity : AppCompatActivity(), PasswordDialog.Listener {
+class EditProfileActivity :BaseActivity(), PasswordDialog.Listener {
     private lateinit var mPendingUser: User // юзер ожидающий изменения
     private lateinit var mUser: User
     private lateinit var mFirebase: FirebaseHelper
@@ -31,8 +32,7 @@ class EditProfileActivity : AppCompatActivity(), PasswordDialog.Listener {
 
 
         //подключаем вьюмодел для данного активити
-        mViewModel = ViewModelProviders.of(this, ViewModelFactory())
-                .get(EditProfileViewModel::class.java)
+        mViewModel = initViewModel()
 
         //получаем текущего юзера
         mViewModel.user.observe(this, Observer{it.let{
@@ -72,9 +72,7 @@ class EditProfileActivity : AppCompatActivity(), PasswordDialog.Listener {
        if (requestCode == mCamera.REQUEST_CODE && resultCode == RESULT_OK ){
 
            // upload photo to firebase storage
-           mViewModel.uploadAndSetUserPhoto(mCamera.imageUri!!).addOnFailureListener {
-               showToast(it.message)
-           }
+           mViewModel.uploadAndSetUserPhoto(mCamera.imageUri!!)
        }
     }
 
@@ -130,7 +128,6 @@ private fun readInputs(): User {
                     currentEmail = mUser.email,
                     newEmail = mPendingUser.email,
                     password = password)
-                    .addOnFailureListener {showToast(it.message)}
                     .addOnSuccessListener { updateUser(mPendingUser) }
         }else{
             showToast(getString(R.string.you_should_enter_your_password))
@@ -141,7 +138,6 @@ private fun readInputs(): User {
     private fun updateUser(user: User) {
 
         mViewModel.updateUserProfile(currentUser = mUser, newUser = user)
-                .addOnFailureListener {showToast(it.message)}
                 .addOnSuccessListener {
                     showToast(getString(R.string.profile_saved))
                     finish()

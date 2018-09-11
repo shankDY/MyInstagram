@@ -6,6 +6,7 @@ import android.os.Bundle
 import android.support.v7.app.AppCompatActivity
 import android.support.v7.widget.LinearLayoutManager
 import com.shank.myinstagram.R
+import com.shank.myinstagram.activities.bottomActivities.BaseActivity
 import com.shank.myinstagram.viewModels.ViewModelFactory
 import com.shank.myinstagram.adapters.FriendsAdapter
 import com.shank.myinstagram.model.User
@@ -13,7 +14,7 @@ import com.shank.myinstagram.utils.showToast
 import com.shank.myinstagram.viewModels.AddFriendsViewModel
 import kotlinx.android.synthetic.main.activity_add_friends.*
 
-class AddFriendsActivity : AppCompatActivity(), FriendsAdapter.Listener {
+class AddFriendsActivity : BaseActivity(), FriendsAdapter.Listener {
     private lateinit var mUser: User
     private lateinit var mUsers: List<User>
     private lateinit var mAdapter: FriendsAdapter
@@ -37,8 +38,7 @@ class AddFriendsActivity : AppCompatActivity(), FriendsAdapter.Listener {
         //Т.к активити не надежная, ее может убить система и создать заново,
         //например при смене ориентации система убьет активити и создаст новое, и все данные будут
         // загружаться заново
-        mViewModel = ViewModelProviders.of(this, ViewModelFactory())
-                .get(AddFriendsViewModel::class.java)
+        mViewModel = initViewModel()
 
         add_friends_recycler.adapter = mAdapter
         add_friends_recycler.layoutManager = LinearLayoutManager(this)
@@ -75,7 +75,6 @@ class AddFriendsActivity : AppCompatActivity(), FriendsAdapter.Listener {
 
         mViewModel.setFollow(mUser.uid, uid, follow)
                 .addOnSuccessListener { onSuccess() }
-                .addOnFailureListener { showToast(it.message) }
 
     }
 }

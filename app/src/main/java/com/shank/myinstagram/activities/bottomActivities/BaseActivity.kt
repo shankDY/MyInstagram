@@ -1,72 +1,48 @@
 package com.shank.myinstagram.activities.bottomActivities
 
-import android.content.Intent
+import android.arch.lifecycle.Observer
+import android.arch.lifecycle.ViewModel
+import android.arch.lifecycle.ViewModelProviders
 import android.content.pm.ActivityInfo
 import android.os.Bundle
 import android.support.v7.app.AppCompatActivity
-import android.util.Log
-import com.shank.myinstagram.R
-import com.shank.myinstagram.activities.otherActivities.LikesActivity
-import kotlinx.android.synthetic.main.bottom_navigation_view.*
+import com.shank.myinstagram.utils.showToast
+import com.shank.myinstagram.viewModels.CommonViewModel
+import com.shank.myinstagram.viewModels.ViewModelFactory
 
+// хорошее правило разработки гласит, что один класс должен отвечать за одну функциональность
+//т.к baseActivity выступает у нас , как супер класс для наших bottomActivity,
+// то тут не должно быть навигации
+abstract class BaseActivity: AppCompatActivity() {
 
-abstract class BaseActivity(val navNumber: Int) : AppCompatActivity() {
+   protected lateinit var commonViewModel: CommonViewModel
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         //отключаем смену ориентации экрана на книжную, для того,
         // чтобы активити так часто не убивались
         requestedOrientation = ActivityInfo.SCREEN_ORIENTATION_PORTRAIT
+        commonViewModel = ViewModelProviders.of(this).get(CommonViewModel::class.java)
+
+        //обработчик ошибок
+        commonViewModel.errorMessage.observe(this, Observer{it?.let{
+            showToast(it)
+        }})
     }
 
-    fun setupBottomNavigation() {
-        bottom_navigation_view.setIconSize(29f, 29f) //размер иконки navigationBottom
-        bottom_navigation_view.setTextVisibility(false)// отключаем показ текста под иконкой
-        bottom_navigation_view.enableItemShiftingMode(false)//отключаем смещение элементов
-        bottom_navigation_view.enableShiftingMode(false)
-        bottom_navigation_view.enableAnimation(false)//отключаем анимацию элементов
+    //reified позволяет передать тип, не указывая его явно, есть только в inline функции
+    //inline функция, инлайнится в то место, где вызывана
+   protected inline fun <reified T: ViewModel> initViewModel() =
+    // ViewModelProvider - будет отвественен за создание вьюмодели,
+    // что мы ему указали. для той активити , что мы ему передали.
+    //т.е при первом создании активити, создается viewModel, а при следущих уничтожениях
+    // и возобновлениях работы будет возвращать туже модель
+    //Т.к активити не надежная, ее может убить система и создать заново,
+    //например при смене ориентации система убьет активити и создаст новое, и все данные будут
+    // загружаться заново
+        ViewModelProviders.of(this, ViewModelFactory(commonViewModel)).get(T::class.java)
 
-        //отключаем выделение
-        for (i in 0 until bottom_navigation_view.menu.size()) {
-            bottom_navigation_view.setIconTintList(i, null)
-        }
 
-        //вешаем слушатель на navigationBottom. И с помощью when делаем выбор
-        bottom_navigation_view.setOnNavigationItemSelectedListener {
-            val nextActivity =
-                    when (it.itemId) {
-                        R.id.nav_item_home -> HomeActivity::class.java
-                        R.id.nav_item_search -> SearchActivity::class.java
-                        R.id.nav_item_share -> ShareActivity::class.java
-                        R.id.nav_item_likes -> LikesActivity::class.java
-                        R.id.nav_item_profile -> ProfileActivity::class.java
-                        else -> {
-                            Log.e(TAG, "unknown nav item clicked $it")
-                            null
-                        }
-                    }
-            if (nextActivity != null) {
-                val intent = Intent(this, nextActivity)
-                intent.flags = Intent.FLAG_ACTIVITY_NO_ANIMATION
-                startActivity(intent)
-                //убираем анимацию переключения экранов
-                overridePendingTransition(0, 0)
-                true
-            } else {
-                false
-            }
-        }
-
-    }
-
-    //когда активити возобновляет свою работу, то выполняется след метод
-    override fun onResume() {
-        super.onResume()
-        if(bottom_navigation_view != null){
-            //делает текущим тот навигейшен итем,который сейчас открыт
-            bottom_navigation_view.menu.getItem(navNumber).isChecked = true
-        }
-    }
 
     //храним все статические переменные класса в данном объекте
     companion object {

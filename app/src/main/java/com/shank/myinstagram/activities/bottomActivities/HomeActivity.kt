@@ -9,9 +9,10 @@ import com.shank.myinstagram.R
 import com.shank.myinstagram.activities.authentication.LoginActivity
 import com.shank.myinstagram.adapters.FeedAdapter
 import com.shank.myinstagram.utils.*
+import com.shank.myinstagram.views.setupBottomNavigation
 import kotlinx.android.synthetic.main.activity_home.*
 
-class HomeActivity : BaseActivity(0), FeedAdapter.Listener {
+class HomeActivity : BaseActivity(), FeedAdapter.Listener {
 
     private val TAG = "HomeActivity"
     // ленивая инициализация( т.е инициализация произойдет позже)
@@ -24,7 +25,7 @@ class HomeActivity : BaseActivity(0), FeedAdapter.Listener {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_home)
         Log.d(TAG, "onCreate")
-        setupBottomNavigation()
+        setupBottomNavigation(0)
 
 
 
