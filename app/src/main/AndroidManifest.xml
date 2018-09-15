@@ -19,27 +19,27 @@
         android:label="@string/app_name"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".activities.bottomActivities.HomeActivity">
+        <activity android:name=".screens.home.HomeActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".activities.bottomActivities.SearchActivity" />
-        <activity android:name=".activities.bottomActivities.ShareActivity" />
-        <activity android:name=".activities.otherActivities.LikesActivity" />
-        <activity android:name=".activities.bottomActivities.ProfileActivity" />
-        <activity android:name=".activities.otherActivities.EditProfileActivity" />
+        <activity android:name=".screens.SearchActivity" />
+        <activity android:name=".screens.ShareActivity" />
+        <activity android:name=".screens.LikesActivity" />
+        <activity android:name=".screens.ProfileActivity" />
+        <activity android:name=".screens.editprofile.EditProfileActivity" />
         <activity
-            android:name=".activities.authentication.LoginActivity"
+            android:name=".screens.LoginActivity"
             android:windowSoftInputMode="stateVisible|adjustResize" />
         <activity
-            android:name=".activities.authentication.RegisterActivity"
+            android:name=".screens.RegisterActivity"
             android:windowSoftInputMode="stateVisible|adjustResize" />
 
-        <activity android:name=".activities.otherActivities.ProfileSettingsActivity"/>
-        <activity android:name=".activities.otherActivities.AddFriendsActivity"/>
+        <activity android:name=".screens.profilesettings.ProfileSettingsActivity"/>
+        <activity android:name=".screens.addfriends.AddFriendsActivity"/>
 
         <provider
             android:name="android.support.v4.content.FileProvider"
