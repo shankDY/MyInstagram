@@ -1,4 +1,4 @@
-<com.shank.myinstagram.views.KeyboardAwareScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+<com.shank.myinstagram.screens.common.KeyboardAwareScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
@@ -8,7 +8,7 @@
     <android.support.constraint.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        tools:context=".activities.authentication.LoginActivity">
+        tools:context=".screens.LoginActivity">
 
         <ImageView
             android:id="@+id/instagram_image"
@@ -52,4 +52,4 @@
 
     </android.support.constraint.ConstraintLayout>
 
-</com.shank.myinstagram.views.KeyboardAwareScrollView>
+</com.shank.myinstagram.screens.common.KeyboardAwareScrollView>

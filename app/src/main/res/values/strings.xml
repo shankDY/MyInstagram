@@ -46,9 +46,10 @@
     <string name="enter_email_and_password">Please enter email and password</string>
     <string name="username_is_clicked">Username is clicked</string>
 
-    <!-- для соглосования окончаний с разным количеством  -->
+    <!-- для соглосования окончаний с разным количеством
+      %d означает, что можно поставить числовое значение-->
     <plurals name="likes_count">
-        <item quantity="one">like</item>
-        <item quantity="other">likes</item>
+        <item quantity="one">%d like</item>
+        <item quantity="other">%d likes</item>
     </plurals>
 </resources>
