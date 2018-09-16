@@ -5,6 +5,10 @@ import android.content.Intent
 import android.os.Bundle
 import android.util.Log
 import com.shank.myinstagram.R
+<<<<<<< HEAD:app/src/main/java/com/shank/myinstagram/screens/editprofile/EditProfileActivity.kt
+=======
+import com.shank.myinstagram.data.firebase.common.FirebaseHelper
+>>>>>>> f9f35d23b66606e41c731143864e04ee19934201:app/src/main/java/com/shank/myinstagram/screens/editprofile/EditProfileActivity.kt
 import com.shank.myinstagram.model.User
 import com.shank.myinstagram.screens.common.*
 import kotlinx.android.synthetic.main.activity_edit_profile.*

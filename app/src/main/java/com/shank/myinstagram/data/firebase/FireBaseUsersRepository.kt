@@ -5,12 +5,19 @@ import android.net.Uri
 import com.google.android.gms.tasks.Task
 import com.google.android.gms.tasks.Tasks
 import com.google.firebase.auth.EmailAuthProvider
+<<<<<<< HEAD:app/src/main/java/com/shank/myinstagram/data/firebase/FireBaseUsersRepository.kt
+=======
+import com.google.firebase.auth.FirebaseAuth
+>>>>>>> f9f35d23b66606e41c731143864e04ee19934201:app/src/main/java/com/shank/myinstagram/data/firebase/FireBaseUsersRepository.kt
 import com.shank.myinstagram.common.toUnit
 import com.shank.myinstagram.data.UsersRepository
 import com.shank.myinstagram.model.User
 import com.shank.myinstagram.data.common.map
 import com.shank.myinstagram.data.firebase.common.*
+<<<<<<< HEAD:app/src/main/java/com/shank/myinstagram/data/firebase/FireBaseUsersRepository.kt
 import com.shank.myinstagram.model.FeedPost
+=======
+>>>>>>> f9f35d23b66606e41c731143864e04ee19934201:app/src/main/java/com/shank/myinstagram/data/firebase/FireBaseUsersRepository.kt
 
 
 // вся логика реализуется в репозиториях

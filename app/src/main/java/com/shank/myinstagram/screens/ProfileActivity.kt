@@ -11,6 +11,15 @@ import android.view.LayoutInflater
 import android.view.ViewGroup
 import android.widget.ImageView
 import com.shank.myinstagram.R
+<<<<<<< HEAD:app/src/main/java/com/shank/myinstagram/screens/ProfileActivity.kt
+=======
+import com.shank.myinstagram.common.ValueEventListenerAdapter
+import com.shank.myinstagram.data.firebase.common.FirebaseHelper
+import com.shank.myinstagram.data.firebase.common.asUser
+import com.shank.myinstagram.data.firebase.common.currentUid
+import com.shank.myinstagram.data.firebase.common.database
+import com.shank.myinstagram.model.User
+>>>>>>> f9f35d23b66606e41c731143864e04ee19934201:app/src/main/java/com/shank/myinstagram/screens/ProfileActivity.kt
 import com.shank.myinstagram.screens.addfriends.AddFriendsActivity
 import com.shank.myinstagram.screens.common.*
 import com.shank.myinstagram.screens.editprofile.EditProfileActivity
@@ -45,6 +54,17 @@ class ProfileActivity : BaseActivity() {
             startActivity(intent)
         }
 
+<<<<<<< HEAD:app/src/main/java/com/shank/myinstagram/screens/ProfileActivity.kt
+=======
+        mFirebase = FirebaseHelper(this)
+        //помещаем данные с базы на экран профиля
+        mFirebase.currentUserReference().addValueEventListener(ValueEventListenerAdapter {
+            mUser = it.asUser()!!
+            profile_image.loadUserPhoto(mUser.photo)
+            username_text.text = mUser.username
+        })
+
+>>>>>>> f9f35d23b66606e41c731143864e04ee19934201:app/src/main/java/com/shank/myinstagram/screens/ProfileActivity.kt
         //создали табличку на 3 колонки
         //layoutManager отвечает за отображение Recycler(кастомизировать отображение)
         images_recycler.layoutManager = GridLayoutManager(this,3 )
@@ -71,8 +91,19 @@ class ProfileActivity : BaseActivity() {
         }
     }
 
+<<<<<<< HEAD:app/src/main/java/com/shank/myinstagram/screens/ProfileActivity.kt
     companion object {
         const val TAG = "ProfileActivity"
+=======
+        /*мы запрашиваем список (пути картинок в хранилище), у каждого списка ,
+        есть уникальныйи ключ(id юзера) и значение(пути картинок),
+        мы берем и  кастим значения к String. */
+        database.child("images").child(currentUid()!!).
+                addValueEventListener(ValueEventListenerAdapter { it ->
+                    val images = it.children.map { it.getValue(String::class.java)!! }
+                    images_recycler.adapter = ImagesAdapter(images)
+                })
+>>>>>>> f9f35d23b66606e41c731143864e04ee19934201:app/src/main/java/com/shank/myinstagram/screens/ProfileActivity.kt
     }
 }
 
