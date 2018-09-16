@@ -1,22 +1,16 @@
 package com.shank.myinstagram.screens
 
-import android.content.Context
+import android.arch.lifecycle.Observer
 import android.content.Intent
 import android.os.Bundle
+import android.support.v7.util.DiffUtil
 import android.support.v7.widget.GridLayoutManager
 import android.support.v7.widget.RecyclerView
-import android.util.AttributeSet
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import android.widget.ImageView
 import com.shank.myinstagram.R
-import com.shank.myinstagram.common.ValueEventListenerAdapter
-import com.shank.myinstagram.data.firebase.common.FirebaseHelper
-import com.shank.myinstagram.data.firebase.common.asUser
-import com.shank.myinstagram.data.firebase.common.currentUid
-import com.shank.myinstagram.data.firebase.common.database
-import com.shank.myinstagram.model.User
 import com.shank.myinstagram.screens.addfriends.AddFriendsActivity
 import com.shank.myinstagram.screens.common.*
 import com.shank.myinstagram.screens.editprofile.EditProfileActivity
@@ -24,10 +18,9 @@ import com.shank.myinstagram.screens.profilesettings.ProfileSettingsActivity
 import kotlinx.android.synthetic.main.activity_profile.*
 
 class ProfileActivity : BaseActivity() {
-    private val TAG = "ProfileActivity"
-    private lateinit var mFirebase: FirebaseHelper
 
-    private lateinit var mUser: User
+
+    private lateinit var mAdapter: ImagesAdapter
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -52,32 +45,47 @@ class ProfileActivity : BaseActivity() {
             startActivity(intent)
         }
 
-        mFirebase = FirebaseHelper(this)
-        //помещаем данные с базы на экран профиля
-        mFirebase.currentUserReference().addValueEventListener(ValueEventListenerAdapter {
-            mUser = it.asUser()!!
-            profile_image.loadUserPhoto(mUser.photo)
-            username_text.text = mUser.username
-        })
-
         //создали табличку на 3 колонки
         //layoutManager отвечает за отображение Recycler(кастомизировать отображение)
         images_recycler.layoutManager = GridLayoutManager(this,3 )
+        mAdapter = ImagesAdapter()
 
-        /*мы запрашиваем список (пути картинок в хранилище), у каждого списка ,
-        есть уникальныйи ключ(id юзера) и значение(пути картинок),
-        мы берем и  кастим значения к String. */
-        database.child("images").child(currentUid()!!).
-                addValueEventListener(ValueEventListenerAdapter { it ->
-                    val images = it.children.map { it.getValue(String::class.java)!! }
-                    images_recycler.adapter = ImagesAdapter(images)
-                })
+
+        setupAuthGuard {uid ->
+            val viewModel = initViewModel<ProfileViewModel>()
+            //передаем  uid viewModel
+            viewModel.init(uid)
+            viewModel.user.observe(this, Observer {
+                it?.let {
+                    profile_image.loadUserPhoto(it.photo)
+                    username_text.text = it.username
+                }
+            })
+
+            //слушаем images, если они пришли, то передаем в адаптер
+            viewModel.images.observe(this, Observer {
+                it?.let{images ->
+                  mAdapter.updateImages(images)
+                }
+            })
+        }
+    }
+
+    companion object {
+        const val TAG = "ProfileActivity"
     }
 }
 
 //ImagesAdapter помогает засовывать данные в наш Recycler
-class  ImagesAdapter(private val images: List<String>):
-        RecyclerView.Adapter<ImagesAdapter.ViewHolder>(){
+class  ImagesAdapter: RecyclerView.Adapter<ImagesAdapter.ViewHolder>(){
+
+    private var images = listOf<String>()
+
+    fun updateImages(newImages: List<String>){
+        val diffResult = DiffUtil.calculateDiff(SimpleCallback(images,newImages) {it})
+        this.images = newImages
+        diffResult.dispatchUpdatesTo(this)
+    }
 
     //патерн, который кеширует наши view в памяти, чтобы не искать его в лайуте и делать ссылку
     class ViewHolder(val image: ImageView): RecyclerView.ViewHolder(image)
@@ -98,13 +106,3 @@ class  ImagesAdapter(private val images: List<String>):
     override fun getItemCount(): Int = images.size
 }
 
-//вспомогательный класс, который будет делать наши картинки квадратными
-class SquareImageView(context: Context, attrs: AttributeSet): ImageView(context, attrs){
-    //кастомизация размеров нашей картинки
-    //данный метод вызывается, когда layout хочет измерить размер картинки
-    override fun onMeasure(widthMeasureSpec: Int, heightMeasureSpec: Int) {
-        //передаем две ширины, что означает, что картинка будет квадратная
-        super.onMeasure(widthMeasureSpec, widthMeasureSpec)
-
-    }
-}

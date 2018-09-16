@@ -15,5 +15,10 @@ class CommonViewModel: ViewModel(), OnFailureListener {
     //ловим ошибку и запихиваем в наш список. для дальнейшей обработки
     override fun onFailure(e: Exception) {
         _errorMessage.value = e.message
+        setErrorMessage(e.message)
+    }
+
+    fun setErrorMessage(message: String?) {
+       message?.let {_errorMessage.value = it}
     }
 }

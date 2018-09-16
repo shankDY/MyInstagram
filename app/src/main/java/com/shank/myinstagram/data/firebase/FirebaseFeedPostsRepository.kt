@@ -12,6 +12,7 @@ import com.shank.myinstagram.data.common.map
 import com.shank.myinstagram.data.firebase.common.*
 import com.shank.myinstagram.model.FeedPost
 
+//реализация фйнкция FeedPostRepository
 class FirebaseFeedPostsRepository: FeedPostsRepository {
 
     //читаем лайки

@@ -2,9 +2,9 @@
 
 <!-- разметка для элементов профиля(картинки юзера) -->
 
-<com.shank.myinstagram.screens.SquareImageView
+<com.shank.myinstagram.screens.common.SquareImageView
     xmlns:android="http://schemas.android.com/apk/res/android" android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:padding="1dp">
 
-</com.shank.myinstagram.screens.SquareImageView>
+</com.shank.myinstagram.screens.common.SquareImageView>

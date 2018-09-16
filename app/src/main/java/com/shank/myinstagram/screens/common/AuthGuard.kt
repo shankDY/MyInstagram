@@ -29,17 +29,20 @@ class AuthGuard(private val activity: BaseActivity, f: (String) -> Unit) : Lifec
         }
     }
 
+    //когда активити или фрагмент живы, то мы слушаем колбеки
     @OnLifecycleEvent(Lifecycle.Event.ON_START)
     fun onStart(){
         auth.addAuthStateListener(listener)
     }
 
+    //когда активити неактивна, то наши слушатели уничтожаются
     @OnLifecycleEvent(Lifecycle.Event.ON_STOP)
     fun onStop(){
         auth.removeAuthStateListener(listener)
     }
 }
 
+//функция , которая позволит нам устанавливать authGuard в каждое активити
 fun BaseActivity.setupAuthGuard(f: (String) -> Unit){
     AuthGuard(this, f)
 }

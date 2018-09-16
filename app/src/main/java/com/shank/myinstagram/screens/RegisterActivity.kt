@@ -1,43 +1,52 @@
 package com.shank.myinstagram.screens
 
+import android.arch.lifecycle.Observer
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
 import android.support.v4.app.Fragment
-import android.support.v7.app.AppCompatActivity
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import com.google.android.gms.tasks.Task
-import com.google.firebase.auth.AuthResult
-import com.google.firebase.auth.FirebaseAuth
-import com.google.firebase.database.DatabaseReference
-import com.google.firebase.database.FirebaseDatabase
 import com.shank.myinstagram.R
-import com.shank.myinstagram.model.User
+import com.shank.myinstagram.screens.common.BaseActivity
 import com.shank.myinstagram.screens.common.coordinateBtnAndInputs
-import com.shank.myinstagram.screens.common.showToast
 import com.shank.myinstagram.screens.home.HomeActivity
 import kotlinx.android.synthetic.main.fragment_register_email.*
 import kotlinx.android.synthetic.main.fragment_register_namepass.*
 
-class RegisterActivity : AppCompatActivity(), EmailFragment.Listener, NamePassFragment.Listener {
+class RegisterActivity : BaseActivity(), EmailFragment.Listener, NamePassFragment.Listener {
 
-
-    private val TAG = "RegisterActivity"
-    private var mEmail:String? = null
-    private lateinit var mAuth: FirebaseAuth
-    private lateinit var mDatabase: DatabaseReference
-
+    private lateinit var mViewModel: RegisterViewModel
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_register)
         Log.d(TAG,"onCreate")
 
-        mAuth = FirebaseAuth.getInstance() //сыылка на регистрацию в firebase
-        mDatabase = FirebaseDatabase.getInstance().reference // получем ссылку на объект в бд
+        mViewModel = initViewModel()
+
+        mViewModel.goToNamePassScreen.observe(this, Observer {
+            //если email не пустой, то вызываем(emailFragment заменяется следущим
+            // фрагментом) фрагмент NamePassFragment по нажатию кнопки next
+            supportFragmentManager.beginTransaction()
+                    .replace(R.id.frame_layout, NamePassFragment())
+                    //сохраняем предыдущий фрагмент в backStack,
+                    // чтобы по кнопке назад можно было вернуться на предыдущий фрагмент
+                    .addToBackStack(null)
+                    .commit()// производим транзакцию
+        })
+
+        //переход на HomeActivity
+        mViewModel.goToHomeScreen.observe(this, Observer {
+            startHomeActivity()
+        })
+
+        //переход на emailFragment
+        mViewModel.goBackToEmailScreen.observe(this, Observer {
+            supportFragmentManager.popBackStack()
+        })
 
         /**
          * управление фрагментом. при старте Активити будет вызван EmailFragment.
@@ -56,124 +65,26 @@ class RegisterActivity : AppCompatActivity(), EmailFragment.Listener, NamePassFr
 
     //получаем с фрагмента 1 email
     override fun OnNext(email: String) {
-        if (email.isNotEmpty()) {
-            mEmail = email
-            //проверка уникальности email
-            mAuth.fetchSignInMethodsForEmail(email) {signInMethods ->
-                    //если signInMethods либо isEmpty = true
-                if (signInMethods.isEmpty()) {
-
-                        //если email не пустой, то вызываем(emailFragment заменяется следущим
-                    // фрагментом) фрагмент NamePassFragment по нажатию кнопки next
-                        supportFragmentManager.beginTransaction()
-                                .replace(R.id.frame_layout, NamePassFragment())
-                                //сохраняем предыдущий фрагмент в backStack,
-                                // чтобы по кнопке назад можно было вернуться на предыдущий фрагмент
-                                .addToBackStack(null)
-                                .commit()// производим транзакцию
-                    } else{
-                        showToast(getString(R.string.email_exist))
-                    }
-            }
-
-        }else{
-            showToast(getString(R.string.please_enter_email))
-        }
+        mViewModel.onEmailEntered(email)
     }
 
     //получаем с фрагмента 2 fullname и password
-    override fun OnRegister(fullname: String, pass: String) {
-        //если мы получили все необходимые данные с нашего фрагмента 2
-        if (fullname.isNotEmpty() and  pass.isNotEmpty()){
-            // тут на всякий случай проверим получен ли email юзера
-            val email = mEmail
-            //если все ок, то
-            if (email != null){
-                //создаем аутентикейшен
-                mAuth.createUserWithEmailAndPassword(email,pass){
-                    val user = mkUser(fullname,email)
-                    //создаем профиль пользователя
-                    mDatabase.createUser(it.user.uid, user){
-                        //если данные успешно добавленны в бд, то переходим на HomeActivity
-                        startActivity()
-                    }
-                }
-            }else{
-                Log.e(TAG,"OnRegister: email is null")
-                showToast(getString(R.string.please_enter_email))
-                //в случае чего возротит нас на предыдущий фрагмент
-                supportFragmentManager.popBackStack()
-            }
-        }else{
-            showToast(getString(R.string.enter_fullname_and_password))
-        }
+    override fun OnRegister(fullname: String, password: String) {
+        mViewModel.onRegister(fullname, password)
     }
-
-
-
-    //выводим в логи и в тост ошибку. out Any либо * - означает что мы принимаем любой тип объекта
-    private fun unknowRegisterError(it: Task<out Any>) {
-        Log.e(TAG, "Failed profile register", it.exception)
-        showToast(getString(R.string.unknown_error))
-    }
-
 
     //переход на homeActivity
-    private fun startActivity() {
+    private fun startHomeActivity() {
         startActivity(Intent(this, HomeActivity::class.java))
         finish()//убиваем данное активити. по нажатию на кнопку регистрации
     }
 
 
 
-    private fun mkUser(fullname: String, email: String): User{
-        val username = mkUsername(fullname)
-        return User(name = fullname,username = username, email = email)
+    companion object {
+        const val TAG = "RegisterActivity"
     }
 
-    //пока сделаем такую убогую логику)
-    private fun mkUsername(fullname: String): String  = fullname.toLowerCase()
-            .replace(" ", ".")
-
-
-    //Функции расширения createUser, createUserWithEmailAndPassword, которые обрабатывает
-    // наши колбеки  и говорят, что все прошло успешно(isSuccessfull) или нет
-    private fun  DatabaseReference.createUser(uid: String, user: User, onSuccess: () -> Unit){
-        //создаем профиль пользователя
-        val reference = child("users").child(uid)
-        reference.setValue(user).addOnCompleteListener{
-            //если данные успешно добавленны в бд, то вызываем onSucces(),
-            // котоорый говорит нам, что можно переходить на след активити
-            if (it.isSuccessful){
-                onSuccess()
-            }else{
-                unknowRegisterError(it)
-            }
-        }
-    }
-
-    private fun FirebaseAuth.createUserWithEmailAndPassword(email: String, password: String,
-                                                            onSuccess: (AuthResult) -> Unit){
-        createUserWithEmailAndPassword(email,password).addOnCompleteListener {
-            if (it.isSuccessful){
-                onSuccess(it.result)
-            }else{
-                unknowRegisterError(it)
-            }
-        }
-    }
-    private fun FirebaseAuth.fetchSignInMethodsForEmail(email: String,
-                                                        onSuccess: (List<String>) -> Unit){
-        //проверка уникальности email
-        fetchSignInMethodsForEmail(email).addOnCompleteListener {
-            if (it.isSuccessful) {
-                //если signInMethods пустой, то создаем пустой лист
-                onSuccess(it.result.signInMethods?: emptyList<String>() )
-            }else{
-                showToast(it.exception!!.message!!)
-            }
-        }
-    }
 }
 
 

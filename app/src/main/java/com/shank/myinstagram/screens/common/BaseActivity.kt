@@ -42,7 +42,8 @@ abstract class BaseActivity: AppCompatActivity() {
     //reified позволяет передать тип, не указывая его явно, есть только в inline функции
     //inline функция, инлайнится в то место, где вызывана
    protected inline fun <reified T: ViewModel> initViewModel() =
-        ViewModelProviders.of(this, ViewModelFactory(commonViewModel)).get(T::class.java)
+        ViewModelProviders.of(this, ViewModelFactory(application,commonViewModel,
+                commonViewModel)).get(T::class.java)
 
     //переход в Активити регистрации
     fun goToLogin() {

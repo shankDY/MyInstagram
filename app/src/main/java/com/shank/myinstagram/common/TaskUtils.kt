@@ -15,5 +15,5 @@ fun <T> task (block: (TaskCompletionSource<T>)-> Unit): Task<T> {
     return taskSource.task
 }
 
-//переконвертировали Task<Void> в Task<Unit>
-fun Task<Void>.toUnit(): Task<Unit> = onSuccessTask { Tasks.forResult(Unit) }
+//переконвертировали Task любого типа  в Task<Unit>
+fun Task<*>.toUnit(): Task<Unit> = onSuccessTask { Tasks.forResult(Unit) }

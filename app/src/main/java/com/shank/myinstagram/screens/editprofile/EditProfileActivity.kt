@@ -5,7 +5,6 @@ import android.content.Intent
 import android.os.Bundle
 import android.util.Log
 import com.shank.myinstagram.R
-import com.shank.myinstagram.data.firebase.common.FirebaseHelper
 import com.shank.myinstagram.model.User
 import com.shank.myinstagram.screens.common.*
 import kotlinx.android.synthetic.main.activity_edit_profile.*
@@ -13,7 +12,6 @@ import kotlinx.android.synthetic.main.activity_edit_profile.*
 class EditProfileActivity : BaseActivity(), PasswordDialog.Listener {
     private lateinit var mPendingUser: User // юзер ожидающий изменения
     private lateinit var mUser: User
-    private lateinit var mFirebase: FirebaseHelper
     private lateinit var mCamera: CameraHelper
     private lateinit var mViewModel: EditProfileViewModel
 
@@ -21,31 +19,6 @@ class EditProfileActivity : BaseActivity(), PasswordDialog.Listener {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_edit_profile)
         Log.d(TAG, "onCreate")
-
-        //вспомогательный класс, который поможет нам работать с firebase
-        mFirebase = FirebaseHelper(this)
-
-
-        //подключаем вьюмодел для данного активити
-        mViewModel = initViewModel()
-
-        //получаем текущего юзера
-        mViewModel.user.observe(this, Observer{it.let{
-
-            // когда мы получим ответ с firebase, то переконвертируем в удобный нам объект(class User)
-            mUser = it!!
-            //мы получаем данные с бд и проставляем их в наши editText
-            //.EDITABLE можно не использовать, т.к и т.к в editText Buffer type
-            // не используется и юзается EDITABLE
-            name_input.setText(mUser.name)
-            username_input.setText(mUser.username)
-            website_input.setText(mUser.website)
-            bio_input.setText(mUser.bio)
-            email_input.setText(mUser.email)
-            phone_input.setText(mUser.phone?.toString())
-            profile_image.loadUserPhoto(mUser.photo)
-
-        }})
 
         // вспомогательный класс, который позволяет нам получить сделать фото с камеры
         mCamera = CameraHelper(this)
@@ -59,6 +32,30 @@ class EditProfileActivity : BaseActivity(), PasswordDialog.Listener {
         //по клику на текст предоставить юзеру возможность изменить фото
         change_photo_text.setOnClickListener { mCamera.takeCameraPicture() }
 
+        setupAuthGuard {
+
+
+        //подключаем вьюмодел для данного активити
+        mViewModel = initViewModel()
+
+        //получаем текущего юзера
+        mViewModel.user.observe(this, Observer{
+            it.let{
+                // когда мы получим ответ с firebase,
+                // то переконвертируем в удобный нам объект(class User)
+                mUser = it!!
+
+                //мы получаем данные с бд и проставляем их в наши editText
+                name_input.setText(mUser.name)
+                username_input.setText(mUser.username)
+                website_input.setText(mUser.website)
+                bio_input.setText(mUser.bio)
+                email_input.setText(mUser.email)
+                phone_input.setText(mUser.phone?.toString())
+                profile_image.loadUserPhoto(mUser.photo)
+            }
+        })
+        }
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
