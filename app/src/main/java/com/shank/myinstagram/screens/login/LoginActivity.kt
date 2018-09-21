@@ -1,18 +1,15 @@
-package com.shank.myinstagram.screens
+package com.shank.myinstagram.screens.login
 
 import android.arch.lifecycle.Observer
 import android.content.Intent
 import android.os.Bundle
-import android.support.v7.app.AppCompatActivity
 import android.util.Log
 import android.view.View
 import com.shank.myinstagram.R
-import com.shank.myinstagram.data.firebase.common.auth
 import com.shank.myinstagram.screens.common.BaseActivity
 import com.shank.myinstagram.screens.common.coordinateBtnAndInputs
-import com.shank.myinstagram.screens.common.setupAuthGuard
-import com.shank.myinstagram.screens.common.showToast
 import com.shank.myinstagram.screens.home.HomeActivity
+import com.shank.myinstagram.screens.register.RegisterActivity
 import kotlinx.android.synthetic.main.activity_login.*
 import net.yslibrary.android.keyboardvisibilityevent.KeyboardVisibilityEvent
 import net.yslibrary.android.keyboardvisibilityevent.KeyboardVisibilityEventListener

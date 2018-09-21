@@ -7,7 +7,7 @@ import android.content.Intent
 import android.content.pm.ActivityInfo
 import android.os.Bundle
 import android.support.v7.app.AppCompatActivity
-import com.shank.myinstagram.screens.LoginActivity
+import com.shank.myinstagram.screens.login.LoginActivity
 
 // хорошее правило разработки гласит, что один класс должен отвечать за одну функциональность
 //т.к baseActivity выступает у нас , как супер класс для наших bottomActivity,
@@ -47,7 +47,7 @@ abstract class BaseActivity: AppCompatActivity() {
 
     //переход в Активити регистрации
     fun goToLogin() {
-        startActivity(Intent(this,LoginActivity::class.java))
+        startActivity(Intent(this, LoginActivity::class.java))
         finish()
     }
 

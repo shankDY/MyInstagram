@@ -1,20 +1,12 @@
-package com.shank.myinstagram.screens
+package com.shank.myinstagram.screens.register
 
 import android.arch.lifecycle.Observer
-import android.content.Context
 import android.content.Intent
 import android.os.Bundle
-import android.support.v4.app.Fragment
 import android.util.Log
-import android.view.LayoutInflater
-import android.view.View
-import android.view.ViewGroup
 import com.shank.myinstagram.R
 import com.shank.myinstagram.screens.common.BaseActivity
-import com.shank.myinstagram.screens.common.coordinateBtnAndInputs
 import com.shank.myinstagram.screens.home.HomeActivity
-import kotlinx.android.synthetic.main.fragment_register_email.*
-import kotlinx.android.synthetic.main.fragment_register_namepass.*
 
 class RegisterActivity : BaseActivity(), EmailFragment.Listener, NamePassFragment.Listener {
 
@@ -88,63 +80,3 @@ class RegisterActivity : BaseActivity(), EmailFragment.Listener, NamePassFragmen
 }
 
 
-//1 email - nextButton
-class EmailFragment : Fragment(){
-    private lateinit var mListener: Listener
-
-    interface Listener {
-        fun OnNext(email:String)
-    }
-
-    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
-                              savedInstanceState: Bundle?): View? {
-        return inflater.inflate(R.layout.fragment_register_email,container,false)
-    }
-
-    //данный метод будет вызыван, когда будет создан OnCreateView (тут можно вызывать view )
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        // вызываем метод , который позволит делать кнопку аутивной , если нужные поля заполнены
-        coordinateBtnAndInputs(nextbutton, email_input_reg)
-
-        nextbutton.setOnClickListener {
-            val email = email_input_reg.text.toString()
-            mListener.OnNext(email)// передаем наш email в активити
-        }
-
-    }
-
-    //для получения ссылки на активити. для того чтобы передать в активити нашь email
-    override fun onAttach(context: Context?) {
-        super.onAttach(context)
-        mListener = context as Listener
-    }
-}
-
-//2 - full name,password , register button
-class NamePassFragment : Fragment(){
-
-    private lateinit var mListener: Listener
-
-    interface Listener {
-        fun OnRegister(fullname:String, pass:String)
-    }
-
-    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
-                              savedInstanceState: Bundle?): View? {
-        return inflater.inflate(R.layout.fragment_register_namepass,container,false)
-    }
-
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        coordinateBtnAndInputs(register_btn, full_name_input, password_input)
-        register_btn.setOnClickListener{
-            val fullName = full_name_input.text.toString()
-            val password = password_input.text.toString()
-            mListener.OnRegister(fullName, password)
-        }
-    }
-
-    override fun onAttach(context: Context?) {
-        super.onAttach(context)
-        mListener = context as Listener
-    }
-}

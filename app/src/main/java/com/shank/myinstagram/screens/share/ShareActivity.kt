@@ -1,16 +1,13 @@
-package com.shank.myinstagram.screens
+package com.shank.myinstagram.screens.share
 
 import android.content.Intent
 import android.os.Bundle
 import android.util.Log
 import com.shank.myinstagram.R
-import com.shank.myinstagram.common.ValueEventListenerAdapter
 import com.shank.myinstagram.data.firebase.common.*
-import com.shank.myinstagram.model.FeedPost
 import com.shank.myinstagram.model.User
 import com.shank.myinstagram.screens.common.*
 import kotlinx.android.synthetic.main.activity_share.*
-import java.util.*
 
 class ShareActivity : BaseActivity() {
 

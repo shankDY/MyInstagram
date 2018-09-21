@@ -1,4 +1,4 @@
-package com.shank.myinstagram.screens
+package com.shank.myinstagram.screens.share
 
 import android.arch.lifecycle.ViewModel
 import android.net.Uri

@@ -8,8 +8,11 @@ import android.content.Intent
 import android.util.Log
 import com.ittianyu.bottomnavigationviewex.BottomNavigationViewEx
 import com.shank.myinstagram.R
-import com.shank.myinstagram.screens.*
 import com.shank.myinstagram.screens.home.HomeActivity
+import com.shank.myinstagram.screens.likes.LikesActivity
+import com.shank.myinstagram.screens.profile.ProfileActivity
+import com.shank.myinstagram.screens.search.SearchActivity
+import com.shank.myinstagram.screens.share.ShareActivity
 import kotlinx.android.synthetic.main.bottom_navigation_view.*
 
 //данный класс отвечает за навигацию по bottomNavigation

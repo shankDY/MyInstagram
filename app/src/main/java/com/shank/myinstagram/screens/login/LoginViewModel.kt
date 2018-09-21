@@ -1,8 +1,7 @@
-package com.shank.myinstagram.screens
+package com.shank.myinstagram.screens.login
 
 import android.app.Application
 import android.arch.lifecycle.LiveData
-import android.arch.lifecycle.MutableLiveData
 import android.arch.lifecycle.ViewModel
 import com.google.android.gms.tasks.OnFailureListener
 import com.shank.myinstagram.R

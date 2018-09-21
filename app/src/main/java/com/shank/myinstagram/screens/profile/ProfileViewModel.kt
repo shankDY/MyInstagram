@@ -1,4 +1,4 @@
-package com.shank.myinstagram.screens
+package com.shank.myinstagram.screens.profile
 
 import android.arch.lifecycle.LiveData
 import android.arch.lifecycle.ViewModel

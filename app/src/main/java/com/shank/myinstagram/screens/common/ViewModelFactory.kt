@@ -7,10 +7,10 @@ import com.google.android.gms.tasks.OnFailureListener
 import com.shank.myinstagram.common.firebase.FirebaseAuthManager
 import com.shank.myinstagram.data.firebase.FireBaseUsersRepository
 import com.shank.myinstagram.data.firebase.FirebaseFeedPostsRepository
-import com.shank.myinstagram.screens.LoginViewModel
-import com.shank.myinstagram.screens.ProfileViewModel
-import com.shank.myinstagram.screens.RegisterViewModel
-import com.shank.myinstagram.screens.ShareViewModel
+import com.shank.myinstagram.screens.login.LoginViewModel
+import com.shank.myinstagram.screens.profile.ProfileViewModel
+import com.shank.myinstagram.screens.register.RegisterViewModel
+import com.shank.myinstagram.screens.share.ShareViewModel
 import com.shank.myinstagram.screens.addfriends.AddFriendsViewModel
 import com.shank.myinstagram.screens.editprofile.EditProfileViewModel
 import com.shank.myinstagram.screens.home.HomeViewModel

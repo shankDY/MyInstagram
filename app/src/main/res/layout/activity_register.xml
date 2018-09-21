@@ -12,7 +12,7 @@
     android:id="@+id/frame_layout"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    tools:context=".screens.RegisterActivity">
+    tools:context=".screens.register.RegisterActivity">
 </FrameLayout>
 
 </com.shank.myinstagram.screens.common.KeyboardAwareScrollView>

@@ -1,4 +1,4 @@
-package com.shank.myinstagram.screens
+package com.shank.myinstagram.screens.search
 
 import android.os.Bundle
 import android.util.Log
