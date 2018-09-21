@@ -8,13 +8,9 @@ import android.util.Log
 import android.view.View
 import com.shank.myinstagram.R
 import com.shank.myinstagram.data.firebase.common.auth
-<<<<<<< HEAD:app/src/main/java/com/shank/myinstagram/screens/LoginActivity.kt
 import com.shank.myinstagram.screens.common.BaseActivity
 import com.shank.myinstagram.screens.common.coordinateBtnAndInputs
 import com.shank.myinstagram.screens.common.setupAuthGuard
-=======
-import com.shank.myinstagram.screens.common.coordinateBtnAndInputs
->>>>>>> f9f35d23b66606e41c731143864e04ee19934201:app/src/main/java/com/shank/myinstagram/screens/LoginActivity.kt
 import com.shank.myinstagram.screens.common.showToast
 import com.shank.myinstagram.screens.home.HomeActivity
 import kotlinx.android.synthetic.main.activity_login.*
@@ -41,17 +37,15 @@ class LoginActivity : BaseActivity(), KeyboardVisibilityEventListener, View.OnCl
         login_btn.setOnClickListener(this)
         create_account_text.setOnClickListener(this)
 
-        setupAuthGuard {
             mViewModel = initViewModel()
             mViewModel.goToHomeScreen.observe(this, Observer {
-                    startActivity(Intent(this, HomeActivity::class.java))
-                    finish()
+                startActivity(Intent(this, HomeActivity::class.java))
+                finish()
             })
 
             mViewModel.goToRegisterScreen.observe(this, Observer {
                 startActivity(Intent(this, RegisterActivity::class.java))
             })
-        }
 
     }
 
@@ -72,35 +66,12 @@ class LoginActivity : BaseActivity(), KeyboardVisibilityEventListener, View.OnCl
     // т.к если мы нажимаем на кнопку, то передается view
     override fun onClick(view: View) {
         when(view.id){
-<<<<<<< HEAD:app/src/main/java/com/shank/myinstagram/screens/LoginActivity.kt
             R.id.login_btn ->
                 mViewModel.onLoginClick(
                         email = email_input.text.toString(),
                         password = password_input.text.toString()
                 )
             R.id.create_account_text -> mViewModel.onRegisterClick()
-=======
-            R.id.login_btn -> {
-
-                val email = email_input.text.toString()
-                val password = password_input.text.toString()
-                if (validate(email, password)) {
-                    auth.signInWithEmailAndPassword(email, password)
-                            .addOnCompleteListener {
-                        if (it.isSuccessful) {
-                            startActivity(Intent(this, HomeActivity::class.java))
-                            finish()
-                        }
-                    }
-                } else {
-                    showToast(getString(R.string.enter_email_and_password))
-                }
-            }
-            R.id.create_account_text -> {
-                startActivity(Intent(this, RegisterActivity::class.java))
-                //finish() делать не будем. Т.к в данном случае кнопка назад должна работать
-            }
->>>>>>> f9f35d23b66606e41c731143864e04ee19934201:app/src/main/java/com/shank/myinstagram/screens/LoginActivity.kt
         }
     }
 

@@ -2,17 +2,9 @@
 
 <!-- разметка для элементов профиля(картинки юзера) -->
 
-<<<<<<< HEAD
 <com.shank.myinstagram.screens.common.SquareImageView
-=======
-<com.shank.myinstagram.screens.SquareImageView
->>>>>>> f9f35d23b66606e41c731143864e04ee19934201
     xmlns:android="http://schemas.android.com/apk/res/android" android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:padding="1dp">
 
-<<<<<<< HEAD
 </com.shank.myinstagram.screens.common.SquareImageView>
-=======
-</com.shank.myinstagram.screens.SquareImageView>
->>>>>>> f9f35d23b66606e41c731143864e04ee19934201

@@ -4,10 +4,7 @@ import android.os.Bundle
 import android.util.Log
 import com.shank.myinstagram.R
 import com.shank.myinstagram.screens.common.BaseActivity
-<<<<<<< HEAD:app/src/main/java/com/shank/myinstagram/screens/LikesActivity.kt
 import com.shank.myinstagram.screens.common.setupAuthGuard
-=======
->>>>>>> f9f35d23b66606e41c731143864e04ee19934201:app/src/main/java/com/shank/myinstagram/screens/LikesActivity.kt
 import com.shank.myinstagram.screens.common.setupBottomNavigation
 
 class LikesActivity : BaseActivity() {
