@@ -12,6 +12,7 @@ interface FeedPostsRepository {
     fun getFeedPosts(uid: String): LiveData<List<FeedPost>>
     fun toogleLike(postId: String, uid: String): Task<Unit>
     fun getLikes(postId: String): LiveData<List<FeedPostLike>>
+    fun createFeedpost(uid: String, feedpost: FeedPost): Task<Unit>
 
 }
 

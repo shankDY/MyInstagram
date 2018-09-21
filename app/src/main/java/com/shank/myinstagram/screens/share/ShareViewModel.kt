@@ -4,11 +4,13 @@ import android.arch.lifecycle.ViewModel
 import android.net.Uri
 import com.google.android.gms.tasks.OnFailureListener
 import com.google.android.gms.tasks.Tasks
+import com.shank.myinstagram.data.FeedPostsRepository
 import com.shank.myinstagram.data.UsersRepository
 import com.shank.myinstagram.model.FeedPost
 import com.shank.myinstagram.model.User
 
-class ShareViewModel(private val usersRepo: UsersRepository,
+class ShareViewModel(private val feedPostRepo: FeedPostsRepository,
+                     private val usersRepo: UsersRepository,
                      private val onFailureListener: OnFailureListener): ViewModel() {
 
     val user = usersRepo.getUser()
@@ -19,7 +21,7 @@ class ShareViewModel(private val usersRepo: UsersRepository,
             usersRepo.uploadUserImage(user.uid, imageUri).onSuccessTask { downloadUrl ->
                 Tasks.whenAll(
                         usersRepo.setUserImage(user.uid, downloadUrl!!),
-                        usersRepo.createFeedpost(user.uid,
+                        feedPostRepo.createFeedpost(user.uid,
                                 mkFeedPost(user, caption, downloadUrl.toString() ))
                 ).addOnFailureListener(onFailureListener)
             }

@@ -7,6 +7,7 @@ import android.content.Intent
 import android.content.pm.ActivityInfo
 import android.os.Bundle
 import android.support.v7.app.AppCompatActivity
+import com.shank.myinstagram.screens.InstagramApp
 import com.shank.myinstagram.screens.login.LoginActivity
 
 // хорошее правило разработки гласит, что один класс должен отвечать за одну функциональность
@@ -42,7 +43,9 @@ abstract class BaseActivity: AppCompatActivity() {
     //reified позволяет передать тип, не указывая его явно, есть только в inline функции
     //inline функция, инлайнится в то место, где вызывана
    protected inline fun <reified T: ViewModel> initViewModel() =
-        ViewModelProviders.of(this, ViewModelFactory(application,commonViewModel,
+        ViewModelProviders.of(this, ViewModelFactory(
+                application as InstagramApp,
+                commonViewModel,
                 commonViewModel)).get(T::class.java)
 
     //переход в Активити регистрации

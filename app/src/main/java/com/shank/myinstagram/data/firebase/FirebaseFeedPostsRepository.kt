@@ -15,6 +15,10 @@ import com.shank.myinstagram.model.FeedPost
 //реализация фйнкция FeedPostRepository
 class FirebaseFeedPostsRepository: FeedPostsRepository {
 
+    //создаем feedPosts
+    override fun createFeedpost(uid: String, feedpost: FeedPost): Task<Unit> =
+            database.child("feed-posts").child(uid).push().setValue(feedpost).toUnit()
+
     //читаем лайки
     override fun getLikes(postId: String): LiveData<List<FeedPostLike>> =
         FirebaseLiveData(database.child("likes").child(postId)).map {
