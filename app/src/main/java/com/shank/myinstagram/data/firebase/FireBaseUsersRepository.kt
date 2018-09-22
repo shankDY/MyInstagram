@@ -35,8 +35,8 @@ class FireBaseUsersRepository: UsersRepository {
 
         //загржуаем фотку по нужному адрессу и берем публичный url для нашей фотки,
         // чтобы запостить ее
-       return usersStorageReference.putFile(imageUri).onSuccessTask { it ->
-                    usersStorageReference.downloadUrl.addOnSuccessListener {
+       return usersStorageReference.putFile(imageUri).onSuccessTask {
+           usersStorageReference.downloadUrl.addOnSuccessListener {
                         Tasks.forResult(it)
                     }
                }

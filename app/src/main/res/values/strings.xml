@@ -45,6 +45,9 @@
     <string name="unknown_error">Something wrong happened. please try again later</string>
     <string name="enter_email_and_password">Please enter email and password</string>
     <string name="username_is_clicked">Username is clicked</string>
+    <string name="comments">Comments</string>
+    <string name="post">Post</string>
+    <string name="add_a_comment">Add a comment…</string>
 
     <!-- для соглосования окончаний с разным количеством
       %d означает, что можно поставить числовое значение-->

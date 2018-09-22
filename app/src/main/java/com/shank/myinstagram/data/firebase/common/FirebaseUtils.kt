@@ -7,6 +7,7 @@ import com.google.firebase.database.DatabaseReference
 import com.google.firebase.database.FirebaseDatabase
 import com.google.firebase.storage.FirebaseStorage
 import com.google.firebase.storage.StorageReference
+import com.shank.myinstagram.model.Comment
 import com.shank.myinstagram.model.FeedPost
 import com.shank.myinstagram.model.User
 
@@ -28,9 +29,13 @@ fun DataSnapshot.asUser(): User? =
 fun DataSnapshot.asFeedPost(): FeedPost? =
         getValue(FeedPost::class.java)?.copy(id = key!!)
 
+fun DataSnapshot.asComment(): Comment? =
+        getValue(Comment::class.java)?.copy(id = key!!)
+
 //функция расширения , которая добавляет юзера в фоловеры, либо удаляет его
 fun DatabaseReference.setValueTrue0rRemove(value: Boolean) =
         if (value) setValue(true) else removeValue()
 
 //возвращает нам liveDATA
 fun DatabaseReference.liveData(): LiveData<DataSnapshot> = FirebaseLiveData(this)
+

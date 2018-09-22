@@ -2,17 +2,17 @@ package com.shank.myinstagram.screens.login
 
 import android.app.Application
 import android.arch.lifecycle.LiveData
-import android.arch.lifecycle.ViewModel
 import com.google.android.gms.tasks.OnFailureListener
 import com.shank.myinstagram.R
 import com.shank.myinstagram.common.AuthManager
 import com.shank.myinstagram.common.SingleLiveEvent
+import com.shank.myinstagram.screens.common.BaseViewModel
 import com.shank.myinstagram.screens.common.CommonViewModel
 
 class LoginViewModel(private  val authManager: AuthManager,
                      private val app: Application,
                      private val commmonViewModel: CommonViewModel,
-                     private val onFailureListener: OnFailureListener): ViewModel() {
+                     onFailureListener: OnFailureListener): BaseViewModel(onFailureListener) {
 
     private val _goToHomeScreen = SingleLiveEvent<Unit>()
     //ссылка на переход на homeActivity

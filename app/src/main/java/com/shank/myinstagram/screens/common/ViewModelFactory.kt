@@ -14,6 +14,7 @@ import com.shank.myinstagram.screens.profile.ProfileViewModel
 import com.shank.myinstagram.screens.register.RegisterViewModel
 import com.shank.myinstagram.screens.share.ShareViewModel
 import com.shank.myinstagram.screens.addfriends.AddFriendsViewModel
+import com.shank.myinstagram.screens.comments.CommentsViewModel
 import com.shank.myinstagram.screens.editprofile.EditProfileViewModel
 import com.shank.myinstagram.screens.home.HomeViewModel
 import com.shank.myinstagram.screens.profilesettings.ProfileSettingsViewModel
@@ -39,18 +40,20 @@ class ViewModelFactory(private val app: InstagramApp,
         }else if (modelClass.isAssignableFrom(HomeViewModel::class.java)){
             return HomeViewModel(onFailureListener, feedPostsRepo) as T
         }else if (modelClass.isAssignableFrom(ProfileSettingsViewModel::class.java)){
-                return ProfileSettingsViewModel(authManager) as T
+                return ProfileSettingsViewModel(authManager,onFailureListener) as T
 
         }else if (modelClass.isAssignableFrom(LoginViewModel::class.java)){
             return LoginViewModel(authManager, app,
                     commonViewModel, onFailureListener) as T
         }else if (modelClass.isAssignableFrom(ProfileViewModel::class.java)){
-            return ProfileViewModel(usersRepo) as T
+            return ProfileViewModel(usersRepo,onFailureListener) as T
 
         }else if (modelClass.isAssignableFrom(RegisterViewModel::class.java)){
-            return RegisterViewModel(commonViewModel, app, usersRepo) as T
+            return RegisterViewModel(commonViewModel, app,onFailureListener, usersRepo) as T
         }else if (modelClass.isAssignableFrom(ShareViewModel::class.java)){
             return ShareViewModel(feedPostsRepo, usersRepo, onFailureListener) as T
+        }else if (modelClass.isAssignableFrom(CommentsViewModel::class.java)){
+            return CommentsViewModel(feedPostsRepo,usersRepo,onFailureListener) as T
         }else{
             error("Unknow view model class $modelClass")
         }

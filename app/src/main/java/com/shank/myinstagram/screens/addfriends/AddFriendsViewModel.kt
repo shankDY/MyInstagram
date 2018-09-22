@@ -1,17 +1,19 @@
 package com.shank.myinstagram.screens.addfriends
 
 import android.arch.lifecycle.LiveData
-import android.arch.lifecycle.ViewModel
 import com.google.android.gms.tasks.OnFailureListener
 import com.google.android.gms.tasks.Task
 import com.google.android.gms.tasks.Tasks
 import com.shank.myinstagram.data.FeedPostsRepository
 import com.shank.myinstagram.data.UsersRepository
-import com.shank.myinstagram.model.User
 import com.shank.myinstagram.data.common.map
+import com.shank.myinstagram.model.User
+import com.shank.myinstagram.screens.common.BaseViewModel
 
 //ViewModel для AddFriendActivity
-class AddFriendsViewModel(private val onFailureListener: OnFailureListener,private val usersRepo: UsersRepository, private val feedPostsRepo: FeedPostsRepository): ViewModel(){
+class AddFriendsViewModel(onFailureListener: OnFailureListener,
+                          private val usersRepo: UsersRepository,
+                          private val feedPostsRepo: FeedPostsRepository): BaseViewModel(onFailureListener){
 
     //получаем список юзеров и их друзей, из viewModel
     val userAndFriends: LiveData<Pair<User, List<User>>> =

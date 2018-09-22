@@ -16,10 +16,7 @@ import android.view.ViewGroup
 import android.widget.TextView
 import com.shank.myinstagram.R
 import com.shank.myinstagram.model.FeedPost
-import com.shank.myinstagram.screens.common.SimpleCallback
-import com.shank.myinstagram.screens.common.loadImage
-import com.shank.myinstagram.screens.common.loadUserPhoto
-import com.shank.myinstagram.screens.common.showToast
+import com.shank.myinstagram.screens.common.*
 import kotlinx.android.synthetic.main.feed_item.view.*
 
 //адаптер для постов
@@ -29,8 +26,10 @@ class FeedAdapter(private val listener: Listener)
     interface Listener{
         //функция , которая позволит переключать лайки, вкл или выкл
         fun toogleLike(postId: String)
-
+        //подгружаем лакосики
         fun loadLikes(id: String, position: Int): Any
+        //открываем окно для написания комментария
+        fun openComments(postid: String)
     }
 
     class ViewHolder(val view: View) : RecyclerView.ViewHolder(view)
@@ -79,40 +78,21 @@ class FeedAdapter(private val listener: Listener)
 
             caption_text.setCaptionText(post.username, post.caption)
 
+            //лайкаем посты
+            like_image.setOnClickListener{listener.toogleLike(post.id)}
             //если лайкнули , то ставим черное сердечко, если нет прозрачное
             like_image.setImageResource(
                     if(likes.likedByUser) R.drawable.ic_likes_active
                     else R.drawable.ic_likes_border)
 
-            //лайкаем посты
-            like_image.setOnClickListener{listener.toogleLike(post.id)}
+            //по клику на иконку комента открываем окно для написания коммента
+            comment_image.setOnClickListener{listener.openComments(post.id)}
             listener.loadLikes(post.id, position)
         }
 
     }
 
-    //создаем Spannable text
-    private fun TextView.setCaptionText(username: String, caption: String){
 
-        //spannable: username(bold, clickable) caption
-        val usernameSpannable = SpannableString(username)
-        //мы выделяем часть текста(username). Делаем его жирным
-        usernameSpannable.setSpan(StyleSpan(Typeface.BOLD), 0, usernameSpannable.length,
-                Spannable.SPAN_EXCLUSIVE_EXCLUSIVE)
-        usernameSpannable.setSpan(object: ClickableSpan(){
-            override fun updateDrawState(ds: TextPaint?) {}
-
-            override fun onClick(widget: View) {
-                widget.context.showToast(context.getString(R.string.username_is_clicked))
-            }
-        },0, usernameSpannable.length,
-                Spannable.SPAN_EXCLUSIVE_EXCLUSIVE)
-        /*spannable -> username  text -> caption -> SpannableStringBuilder*/
-        text = SpannableStringBuilder().append(usernameSpannable).append(" ")
-                .append(caption)
-        //делаем текст кликабельным
-        movementMethod = LinkMovementMethod.getInstance()
-    }
 
     //количество постов
     override fun getItemCount() = posts.size

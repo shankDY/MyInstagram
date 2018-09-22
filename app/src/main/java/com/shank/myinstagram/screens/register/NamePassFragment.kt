@@ -8,6 +8,7 @@ import android.view.View
 import android.view.ViewGroup
 import com.shank.myinstagram.R
 import com.shank.myinstagram.screens.common.coordinateBtnAndInputs
+import kotlinx.android.synthetic.main.fragment_register_namepass.*
 
 //2 - full name,password , register button
 class NamePassFragment : Fragment(){

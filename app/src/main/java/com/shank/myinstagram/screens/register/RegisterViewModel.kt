@@ -1,17 +1,19 @@
 package com.shank.myinstagram.screens.register
 
 import android.app.Application
-import android.arch.lifecycle.ViewModel
 import android.util.Log
+import com.google.android.gms.tasks.OnFailureListener
 import com.shank.myinstagram.R
 import com.shank.myinstagram.common.SingleLiveEvent
 import com.shank.myinstagram.data.UsersRepository
 import com.shank.myinstagram.model.User
+import com.shank.myinstagram.screens.common.BaseViewModel
 import com.shank.myinstagram.screens.common.CommonViewModel
 
 class RegisterViewModel(private val commonViewModel: CommonViewModel,
                         private val app: Application,
-                        private val usersRepo: UsersRepository) : ViewModel(){
+                        onFailureListener: OnFailureListener,
+                        private val usersRepo: UsersRepository) : BaseViewModel(onFailureListener){
 
     private var email: String? = null
     private val _goToNamePassScreen = SingleLiveEvent<Unit>()
@@ -32,7 +34,7 @@ class RegisterViewModel(private val commonViewModel: CommonViewModel,
                 }else{
                     commonViewModel.setErrorMessage(app.getString(R.string.email_exist))
                 }
-            }
+            }.addOnFailureListener(onFailureListener)
         }else{
             commonViewModel.setErrorMessage(app.getString(R.string.please_enter_email))
         }
@@ -49,7 +51,7 @@ class RegisterViewModel(private val commonViewModel: CommonViewModel,
                 usersRepo.createUser(mkUser(fullname,localEmail),password).addOnSuccessListener {
                     //переход на HomeActivity
                     _goToHomeScreen.call()
-                }
+                }.addOnFailureListener(onFailureListener)
 
             }else{
                 Log.e(RegisterActivity.TAG,"OnRegister: email is null")

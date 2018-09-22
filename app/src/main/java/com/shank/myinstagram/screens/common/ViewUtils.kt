@@ -2,14 +2,18 @@ package com.shank.myinstagram.screens.common
 
 import android.app.Activity
 import android.content.Context
-import android.text.Editable
-import android.text.TextWatcher
+import android.graphics.Typeface
+import android.support.v4.content.ContextCompat
+import android.text.*
+import android.text.method.LinkMovementMethod
+import android.text.style.ClickableSpan
+import android.text.style.ForegroundColorSpan
+import android.text.style.StyleSpan
 import android.view.View
-import android.widget.Button
-import android.widget.EditText
-import android.widget.ImageView
-import android.widget.Toast
+import android.widget.*
 import com.shank.myinstagram.R
+import com.shank.myinstagram.common.formatRelativeTimestamp
+import java.util.*
 
 
 //данная функция екстеншен(Расширение) класса Context. А классы Context наследуют все Активити
@@ -42,6 +46,48 @@ fun coordinateBtnAndInputs(btn: Button, vararg inputs: EditText) {
 
     //первоначально все кнопки неактивны
     btn.isEnabled = inputs.all { it.text.isNotEmpty() }
+}
+
+
+//создаем утилитарную функцию Spannable text
+fun TextView.setCaptionText(username: String, caption: String, date: Date? = null){
+
+    //spannable: username(bold, clickable) caption
+    val usernameSpannable = SpannableString(username)
+    //мы выделяем часть текста(username). Делаем его жирным
+    usernameSpannable.setSpan(StyleSpan(Typeface.BOLD), 0, usernameSpannable.length,
+            Spannable.SPAN_EXCLUSIVE_EXCLUSIVE)
+    usernameSpannable.setSpan(object: ClickableSpan(){
+        override fun updateDrawState(ds: TextPaint?) {}
+
+        override fun onClick(widget: View) {
+            widget.context.showToast(context.getString(R.string.username_is_clicked))
+        }
+    },0, usernameSpannable.length,
+            Spannable.SPAN_EXCLUSIVE_EXCLUSIVE)
+
+    val dateSpannable = date?.let{
+        val dateText = formatRelativeTimestamp(date, Date())
+        val spannableString = SpannableString(dateText)
+        spannableString.setSpan(ForegroundColorSpan(ContextCompat.getColor(context, R.color.grey)),
+                0, dateText.length, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE)
+        spannableString
+    }
+    /*spannable -> username  text -> caption -> SpannableStringBuilder*/
+    //apply дает нам возможность возратить в данном случае сразу спенебл
+    //Вызывает указанный функциональный блок с этим значением в качестве
+    // приемника и возвращает это значение.
+    text = SpannableStringBuilder().apply {
+        append(usernameSpannable) //добавляем юзернейм
+        append(" ")//пробел
+        append(caption)
+        dateSpannable?.let {
+            append(" ")
+            append(it)
+        }
+    }
+    //делаем текст кликабельным
+    movementMethod = LinkMovementMethod.getInstance()
 }
 
 //функция расширения для ImageView

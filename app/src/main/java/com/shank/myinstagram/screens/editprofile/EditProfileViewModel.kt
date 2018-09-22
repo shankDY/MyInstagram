@@ -1,18 +1,18 @@
 package com.shank.myinstagram.screens.editprofile
 
 import android.arch.lifecycle.LiveData
-import android.arch.lifecycle.ViewModel
 import android.net.Uri
 import com.google.android.gms.tasks.OnFailureListener
 import com.google.android.gms.tasks.Task
-import com.shank.myinstagram.model.User
 import com.shank.myinstagram.data.UsersRepository
+import com.shank.myinstagram.model.User
+import com.shank.myinstagram.screens.common.BaseViewModel
 
 
 //вьюМодел отдает нужные поля в репозиторий
 //ViewModel хранит данные, связанные с UI, которые не уничтожаются при поворотах приложения.
-class EditProfileViewModel(private val onFailureListener: OnFailureListener,
-                           private val usersRepo: UsersRepository) : ViewModel(){
+class EditProfileViewModel(onFailureListener: OnFailureListener,
+                           private val usersRepo: UsersRepository) : BaseViewModel(onFailureListener){
     val user: LiveData<User> = usersRepo.getUser()
 
 

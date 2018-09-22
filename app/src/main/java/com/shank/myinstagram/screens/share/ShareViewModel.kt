@@ -1,6 +1,5 @@
 package com.shank.myinstagram.screens.share
 
-import android.arch.lifecycle.ViewModel
 import android.net.Uri
 import com.google.android.gms.tasks.OnFailureListener
 import com.google.android.gms.tasks.Tasks
@@ -8,10 +7,11 @@ import com.shank.myinstagram.data.FeedPostsRepository
 import com.shank.myinstagram.data.UsersRepository
 import com.shank.myinstagram.model.FeedPost
 import com.shank.myinstagram.model.User
+import com.shank.myinstagram.screens.common.BaseViewModel
 
 class ShareViewModel(private val feedPostRepo: FeedPostsRepository,
                      private val usersRepo: UsersRepository,
-                     private val onFailureListener: OnFailureListener): ViewModel() {
+                     onFailureListener: OnFailureListener): BaseViewModel(onFailureListener) {
 
     val user = usersRepo.getUser()
 

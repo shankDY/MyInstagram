@@ -10,10 +10,22 @@ import com.shank.myinstagram.common.toUnit
 import com.shank.myinstagram.data.FeedPostLike
 import com.shank.myinstagram.data.common.map
 import com.shank.myinstagram.data.firebase.common.*
+import com.shank.myinstagram.model.Comment
 import com.shank.myinstagram.model.FeedPost
 
 //реализация фйнкция FeedPostRepository
 class FirebaseFeedPostsRepository: FeedPostsRepository {
+
+    //создаем комментарий
+    override fun createComment(postId: String, comment: Comment): Task<Unit> =
+        database.child("comments").child(postId).push().setValue(comment).toUnit()
+
+    //вычитываем наши комменты
+    override fun getComments(postId: String): LiveData<List<Comment>> =
+        FirebaseLiveData(database.child("comments").child(postId)).map {
+            //получили список коментиков и замапили его
+            it.children.map {it.asComment()!!}
+        }
 
     //создаем feedPosts
     override fun createFeedpost(uid: String, feedpost: FeedPost): Task<Unit> =

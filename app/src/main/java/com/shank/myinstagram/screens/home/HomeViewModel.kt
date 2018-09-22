@@ -1,18 +1,21 @@
 package com.shank.myinstagram.screens.home
 
 import android.arch.lifecycle.LiveData
-import android.arch.lifecycle.ViewModel
 import com.google.android.gms.tasks.OnFailureListener
+import com.shank.myinstagram.common.SingleLiveEvent
 import com.shank.myinstagram.data.FeedPostsRepository
 import com.shank.myinstagram.data.common.map
 import com.shank.myinstagram.model.FeedPost
+import com.shank.myinstagram.screens.common.BaseViewModel
 
-class HomeViewModel(private val onFailureListener: OnFailureListener,
-                    private val feedPostsRepo: FeedPostsRepository) : ViewModel(){
+class HomeViewModel(onFailureListener: OnFailureListener,
+                    private val feedPostsRepo: FeedPostsRepository) : BaseViewModel(onFailureListener){
     private lateinit var  uid: String
     lateinit var feedPosts: LiveData<List<FeedPost>>
     //карта лайков, где ключ uid , value - лайки
     private var loadedLikes = mapOf<String, LiveData<FeedPostLikes>>()
+    private val _goToCommentsScreen = SingleLiveEvent<String>()
+    val goToCommentsScreen = _goToCommentsScreen
 
     fun init(uid: String) {
         //инифциализация uid
@@ -54,5 +57,10 @@ class HomeViewModel(private val onFailureListener: OnFailureListener,
             return existingLoadedLikes!!
         }
 
+    }
+
+    //открываем окно для написания комментария
+    fun openComments(postid: String) {
+        _goToCommentsScreen.value = postid
     }
 }

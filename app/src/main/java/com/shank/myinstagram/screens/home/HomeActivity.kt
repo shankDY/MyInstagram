@@ -6,20 +6,19 @@ import android.support.v7.widget.LinearLayoutManager
 import android.util.Log
 import com.google.firebase.database.ValueEventListener
 import com.shank.myinstagram.R
+import com.shank.myinstagram.screens.comments.CommentsActivity
 import com.shank.myinstagram.screens.common.BaseActivity
 import com.shank.myinstagram.screens.common.setupAuthGuard
 import com.shank.myinstagram.screens.common.setupBottomNavigation
 import kotlinx.android.synthetic.main.activity_home.*
 
 class HomeActivity : BaseActivity(), FeedAdapter.Listener {
-
     // ленивая инициализация( т.е инициализация произойдет позже)
     private lateinit var mAdapter: FeedAdapter // recyclerView adapter для постов юзеров
+
     //карта слушателей(для проверки, вызван листанер или нет)
     private var mLikesListeners: Map<String, ValueEventListener> = emptyMap()
     private lateinit var mViewModel: HomeViewModel
-
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_home)
@@ -38,8 +37,15 @@ class HomeActivity : BaseActivity(), FeedAdapter.Listener {
             mViewModel.feedPosts.observe(this, Observer{it?.let{
                 mAdapter.updatePosts(it)
 
-            }})
-
+            }
+            })
+            //переходим в окно написания комментария
+            mViewModel.goToCommentsScreen.observe(this, Observer {
+                it.let{
+                    postId ->
+                    CommentsActivity.start(this, postId!!)
+                }
+            })
         }
     }
 
@@ -49,6 +55,7 @@ class HomeActivity : BaseActivity(), FeedAdapter.Listener {
         Log.d(TAG, "toogleLike: $postId")
         mViewModel.toogleLike(postId)
     }
+
 
     //подгрузка лайков
     override fun loadLikes(postId: String, position: Int) {
@@ -60,6 +67,10 @@ class HomeActivity : BaseActivity(), FeedAdapter.Listener {
                 }
             })
         }
+    }
+
+    override fun openComments(postid: String) {
+        mViewModel.openComments(postid)
     }
 
     companion object {
