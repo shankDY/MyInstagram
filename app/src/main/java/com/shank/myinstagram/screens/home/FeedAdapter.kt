@@ -1,22 +1,16 @@
 package com.shank.myinstagram.screens.home
 
-import android.graphics.Typeface
 import android.support.v7.util.DiffUtil
 import android.support.v7.widget.RecyclerView
-import android.text.Spannable
-import android.text.SpannableString
-import android.text.SpannableStringBuilder
-import android.text.TextPaint
-import android.text.method.LinkMovementMethod
-import android.text.style.ClickableSpan
-import android.text.style.StyleSpan
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.TextView
 import com.shank.myinstagram.R
 import com.shank.myinstagram.model.FeedPost
-import com.shank.myinstagram.screens.common.*
+import com.shank.myinstagram.screens.common.SimpleCallback
+import com.shank.myinstagram.screens.common.loadImage
+import com.shank.myinstagram.screens.common.loadUserPhoto
+import com.shank.myinstagram.screens.common.setCaptionText
 import kotlinx.android.synthetic.main.feed_item.view.*
 
 //адаптер для постов

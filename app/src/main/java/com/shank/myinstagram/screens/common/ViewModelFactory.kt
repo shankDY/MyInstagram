@@ -17,6 +17,7 @@ import com.shank.myinstagram.screens.addfriends.AddFriendsViewModel
 import com.shank.myinstagram.screens.comments.CommentsViewModel
 import com.shank.myinstagram.screens.editprofile.EditProfileViewModel
 import com.shank.myinstagram.screens.home.HomeViewModel
+import com.shank.myinstagram.screens.notification.NotificationsViewModel
 import com.shank.myinstagram.screens.profilesettings.ProfileSettingsViewModel
 
 @Suppress("UNCHECKED_CAST")
@@ -31,6 +32,7 @@ class ViewModelFactory(private val app: InstagramApp,
         //где понадобится
         val usersRepo = app.usersRepo
         val feedPostsRepo = app.feedPostsRepo
+        val notificationRepo = app.notificationRepo
         val authManager = app.authManager
 
         if (modelClass.isAssignableFrom(AddFriendsViewModel::class.java)){
@@ -54,6 +56,8 @@ class ViewModelFactory(private val app: InstagramApp,
             return ShareViewModel(feedPostsRepo, usersRepo, onFailureListener) as T
         }else if (modelClass.isAssignableFrom(CommentsViewModel::class.java)){
             return CommentsViewModel(feedPostsRepo,usersRepo,onFailureListener) as T
+        }else  if (modelClass.isAssignableFrom(NotificationsViewModel::class.java)){
+            return NotificationsViewModel(notificationRepo, onFailureListener) as T
         }else{
             error("Unknow view model class $modelClass")
         }

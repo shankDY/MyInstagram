@@ -44,6 +44,7 @@ class ProfileActivity : BaseActivity() {
         //layoutManager отвечает за отображение Recycler(кастомизировать отображение)
         images_recycler.layoutManager = GridLayoutManager(this,3 )
         mAdapter = ImagesAdapter()
+        images_recycler.adapter = mAdapter
 
 
         setupAuthGuard {uid ->

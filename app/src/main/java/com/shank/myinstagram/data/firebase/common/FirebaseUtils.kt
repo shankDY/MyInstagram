@@ -21,21 +21,6 @@ val storage: StorageReference = FirebaseStorage.getInstance().reference
 //получаем нашего зареганного юзера
 fun currentUid(): String? = auth.currentUser?.uid
 
-//функция расширения, с помощью которой получаем uid юзера
-fun DataSnapshot.asUser(): User? =
-        getValue(User::class.java)?.copy(uid = key!!)
-
-//функция расширения, с помощью которой получаем пост по  uid юзера
-fun DataSnapshot.asFeedPost(): FeedPost? =
-        getValue(FeedPost::class.java)?.copy(id = key!!)
-
-fun DataSnapshot.asComment(): Comment? =
-        getValue(Comment::class.java)?.copy(id = key!!)
-
-//функция расширения , которая добавляет юзера в фоловеры, либо удаляет его
-fun DatabaseReference.setValueTrue0rRemove(value: Boolean) =
-        if (value) setValue(true) else removeValue()
-
 //возвращает нам liveDATA
 fun DatabaseReference.liveData(): LiveData<DataSnapshot> = FirebaseLiveData(this)
 

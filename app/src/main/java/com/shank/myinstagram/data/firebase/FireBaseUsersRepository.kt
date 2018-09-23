@@ -5,12 +5,14 @@ import android.net.Uri
 import com.google.android.gms.tasks.Task
 import com.google.android.gms.tasks.Tasks
 import com.google.firebase.auth.EmailAuthProvider
+import com.google.firebase.database.DataSnapshot
+import com.shank.myinstagram.common.Event
+import com.shank.myinstagram.common.EventBus
 import com.shank.myinstagram.common.toUnit
 import com.shank.myinstagram.data.UsersRepository
-import com.shank.myinstagram.model.User
 import com.shank.myinstagram.data.common.map
 import com.shank.myinstagram.data.firebase.common.*
-import com.shank.myinstagram.model.FeedPost
+import com.shank.myinstagram.model.User
 
 
 // вся логика реализуется в репозиториях
@@ -73,6 +75,9 @@ class FireBaseUsersRepository: UsersRepository {
     //fromUid -наш Юзер, toUid - другие пользователи
     override fun addFollow(fromUid: String, toUid: String): Task<Unit> =
             getFollowsRef(fromUid, toUid).setValue(true).toUnit()
+                    .addOnSuccessListener {
+                        EventBus.publish(Event.CreateFollow(fromUid, toUid))
+                    }
 
     //удалить подписку(отписаться от юзверя)
     override fun deleteFollow(fromUid: String, toUid: String): Task<Unit> =
@@ -151,6 +156,15 @@ class FireBaseUsersRepository: UsersRepository {
             //не умеет firebase разбирать uri в данном методе. он принимает Any. поэтому надо преобразовать в строку
         database.child("users/${currentUid()!!}/photo").setValue(downloadUrl.toString()).toUnit()
 
-    override fun getUser(): LiveData<User> =
-            database.child("users").child(currentUid()!!).liveData().map { it.asUser()!! }
+
+    override fun getUser(): LiveData<User> = getUser(currentUid()!!)
+
+    //получаем юзера по uid
+    override fun getUser(uid: String): LiveData<User> =
+            database.child("users").child(uid).liveData().map { it.asUser()!! }
+
+
+    // функция расширения, с помощью которой получаем замапенный список юзеров, где uid -ключ
+    private fun DataSnapshot.asUser(): User? =
+            getValue(User::class.java)?.copy(uid = key!!)
 }

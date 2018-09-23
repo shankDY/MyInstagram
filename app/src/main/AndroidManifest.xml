@@ -29,7 +29,7 @@
         </activity>
         <activity android:name=".screens.search.SearchActivity" />
         <activity android:name=".screens.share.ShareActivity" />
-        <activity android:name=".screens.likes.LikesActivity" />
+        <activity android:name=".screens.notification.NotificationsActivity" />
         <activity android:name=".screens.profile.ProfileActivity" />
         <activity android:name=".screens.editprofile.EditProfileActivity" />
         <activity

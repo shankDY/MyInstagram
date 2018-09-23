@@ -2,11 +2,9 @@ package com.shank.myinstagram.data.firebase
 
 import android.arch.lifecycle.LiveData
 import com.google.android.gms.tasks.Task
-import com.shank.myinstagram.common.TaskSourceOnCompleteListener
-import com.shank.myinstagram.common.ValueEventListenerAdapter
+import com.google.firebase.database.DataSnapshot
+import com.shank.myinstagram.common.*
 import com.shank.myinstagram.data.FeedPostsRepository
-import com.shank.myinstagram.common.task
-import com.shank.myinstagram.common.toUnit
 import com.shank.myinstagram.data.FeedPostLike
 import com.shank.myinstagram.data.common.map
 import com.shank.myinstagram.data.firebase.common.*
@@ -19,6 +17,10 @@ class FirebaseFeedPostsRepository: FeedPostsRepository {
     //создаем комментарий
     override fun createComment(postId: String, comment: Comment): Task<Unit> =
         database.child("comments").child(postId).push().setValue(comment).toUnit()
+                .addOnSuccessListener {
+                    //создаем ивент
+                    EventBus.publish(Event.CreateComment(postId, comment))
+                }
 
     //вычитываем наши комменты
     override fun getComments(postId: String): LiveData<List<Comment>> =
@@ -45,21 +47,33 @@ class FirebaseFeedPostsRepository: FeedPostsRepository {
         //получаем ссылку на место хранения лайков
         val reference = database.child("likes").child(postId).child(uid)
         return task { taskSource ->
-            reference.addListenerForSingleValueEvent(ValueEventListenerAdapter {
+            reference.addListenerForSingleValueEvent(ValueEventListenerAdapter {like ->
                 //если нода существует(поставили уже лайк), то удаляем лайк, иначе
                 // записываем его в бд
-                reference.setValueTrue0rRemove(!it.exists())
+                if (!like.exists()){
+                    reference.setValue(true).addOnSuccessListener {
+                        EventBus.publish(Event.CreateLike(postId, uid))
+                    }
+                }else{
+                    reference.removeValue()
+                }
                 taskSource.setResult(Unit)
             })
         }
     }
 
 
+    //получаем Feedpost юзера
+    override fun getFeedPost(uid: String, postId: String): LiveData<FeedPost> =
+        FirebaseLiveData(database.child("feed-posts").child(uid).child(postId)).map{
+             it.asFeedPost()!!
+        }
+
     //получаем Feedposts юзера
     override fun getFeedPosts(uid: String): LiveData<List<FeedPost>> =
-        FirebaseLiveData(database.child("feed-posts").child(uid)).map{
-            it.children.map { it.asFeedPost()!! }
-        }
+            FirebaseLiveData(database.child("feed-posts").child(uid)).map{
+                it.children.map { it.asFeedPost()!! }
+            }
 
 
     //копируем посты юзеров на которые подписался
@@ -109,6 +123,12 @@ class FirebaseFeedPostsRepository: FeedPostsRepository {
            }
 
 
+    //функция расширения, с помощью которой получаем замапенный список постов, где id поста - ключ
+    private fun DataSnapshot.asFeedPost(): FeedPost? =
+            getValue(FeedPost::class.java)?.copy(id = key!!)
 
-
+    // // функция расширения, с помощью которой получаем замапенный список rjvtynjd,
+    // где id комента - ключ
+    fun DataSnapshot.asComment(): Comment? =
+            getValue(Comment::class.java)?.copy(id = key!!)
 }

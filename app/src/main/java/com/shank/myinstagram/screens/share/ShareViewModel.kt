@@ -15,16 +15,15 @@ class ShareViewModel(private val feedPostRepo: FeedPostsRepository,
 
     val user = usersRepo.getUser()
 
-    //постим фоточку
     fun share(user: User, imageUri: Uri?, caption: String) {
         if (imageUri != null) {
             usersRepo.uploadUserImage(user.uid, imageUri).onSuccessTask { downloadUrl ->
                 Tasks.whenAll(
                         usersRepo.setUserImage(user.uid, downloadUrl!!),
-                        feedPostRepo.createFeedpost(user.uid,
-                                mkFeedPost(user, caption, downloadUrl.toString() ))
-                ).addOnFailureListener(onFailureListener)
-            }
+                        feedPostRepo.createFeedpost(user.uid, mkFeedPost(user, caption,
+                                downloadUrl.toString()))
+                )
+            }.addOnFailureListener(onFailureListener)
         }
     }
 

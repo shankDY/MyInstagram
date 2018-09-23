@@ -106,6 +106,16 @@ fun ImageView.loadImage(image: String?) =
         }
 
 
+//функция, которая позволяет скрыть imageview, когда нет картинки
+fun ImageView.loadImageOrHide(image: String?) =
+    if (image != null){
+        visibility = View.VISIBLE
+        loadImage(image)
+    }else{
+        visibility = View.GONE
+    }
+
+
 //проверка на жива активити или нет
 private fun View.ifNotDestroyed(block: () -> Unit){
 

@@ -26,4 +26,5 @@ interface UsersRepository {
     fun uploadUserImage(uid: String, imageUri: Uri): Task<Uri>
     fun setUserImage(uid: String, downloadUri: Uri): Task<Unit>
 
+    fun getUser(uid: String): LiveData<User>
 }

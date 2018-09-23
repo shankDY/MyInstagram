@@ -22,6 +22,10 @@ class ShareActivity : BaseActivity() {
         setContentView(R.layout.activity_share)
         Log.d(TAG, "onCreate")
 
+        back_image.setOnClickListener { finish() }// кнопка назад.
+        share_text.setOnClickListener { share() }
+
+
         setupAuthGuard {
             mViewModel = initViewModel()
             mFirebase = FirebaseHelper(this)
@@ -29,10 +33,6 @@ class ShareActivity : BaseActivity() {
             //по старту активити будет открываться камера. и получать фото
             mCamera = CameraHelper(this)
             mCamera.takeCameraPicture()
-
-            back_image.setOnClickListener { finish() }// кнопка назад.
-            share_text.setOnClickListener { share() }
-
 
             mViewModel.user.observe(this, android.arch.lifecycle.Observer {
                 it?.let{
@@ -42,22 +42,24 @@ class ShareActivity : BaseActivity() {
         }
     }
 
-    //постим фоточку
-    private fun share() { mViewModel.share(mUser,mCamera.imageUri, caption_input.text.toString()) }
-
-
 
     //если requestCode соответствует , то рисуем картинку и отображаем наше фото на экране постинга
-        override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
-            if (requestCode == mCamera.REQUEST_CODE) {
-                if (resultCode == RESULT_OK) {
-                    post_image.loadImage(mCamera.imageUri?.toString())
-                } else {
-                    // если юзер нажал отмена. то мы сразу убиваем активити
-                    finish()
-                }
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        if (requestCode == mCamera.REQUEST_CODE) {
+            if (resultCode == RESULT_OK) {
+                post_image.loadImage(mCamera.imageUri?.toString())
+            } else {
+                // если юзер нажал отмена. то мы сразу убиваем активити
+                finish()
             }
         }
+    }
+
+    //постим фоточку
+    private fun share() {
+        mViewModel.share(mUser,mCamera.imageUri, caption_input.text.toString())
+    }
+
 
     companion object {
         const val TAG = "ShareActivity"
