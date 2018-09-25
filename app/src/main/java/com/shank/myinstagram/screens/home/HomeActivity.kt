@@ -16,8 +16,6 @@ class HomeActivity : BaseActivity(), FeedAdapter.Listener {
     // ленивая инициализация( т.е инициализация произойдет позже)
     private lateinit var mAdapter: FeedAdapter // recyclerView adapter для постов юзеров
 
-    //карта слушателей(для проверки, вызван листанер или нет)
-    private var mLikesListeners: Map<String, ValueEventListener> = emptyMap()
     private lateinit var mViewModel: HomeViewModel
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)

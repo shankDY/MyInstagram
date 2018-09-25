@@ -1,4 +1,4 @@
-package com.shank.myinstagram.screens.profile
+package com.shank.myinstagram.screens.common
 
 import android.support.v7.util.DiffUtil
 import android.support.v7.widget.RecyclerView
@@ -6,8 +6,6 @@ import android.view.LayoutInflater
 import android.view.ViewGroup
 import android.widget.ImageView
 import com.shank.myinstagram.R
-import com.shank.myinstagram.screens.common.SimpleCallback
-import com.shank.myinstagram.screens.common.loadImage
 
 //ImagesAdapter помогает засовывать данные в наш Recycler
 class  ImagesAdapter: RecyclerView.Adapter<ImagesAdapter.ViewHolder>(){

@@ -30,8 +30,14 @@ class FirebaseFeedPostsRepository: FeedPostsRepository {
         }
 
     //создаем feedPosts
-    override fun createFeedpost(uid: String, feedpost: FeedPost): Task<Unit> =
-            database.child("feed-posts").child(uid).push().setValue(feedpost).toUnit()
+    override fun createFeedpost(uid: String, feedpost: FeedPost): Task<Unit> {
+        val reference = database.child("feed-posts").child(uid).push()
+        return reference.setValue(feedpost).toUnit()
+                .addOnSuccessListener {
+                    // новый ключ, который мы засунули в firebase будет индификатором feedPosts
+                    EventBus.publish(Event.CreateFeedPost(feedpost.copy(id = reference.key!!)))
+                }
+    }
 
     //читаем лайки
     override fun getLikes(postId: String): LiveData<List<FeedPostLike>> =

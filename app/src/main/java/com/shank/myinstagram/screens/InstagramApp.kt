@@ -5,7 +5,9 @@ import com.shank.myinstagram.common.firebase.FirebaseAuthManager
 import com.shank.myinstagram.data.firebase.FireBaseUsersRepository
 import com.shank.myinstagram.data.firebase.FirebaseFeedPostsRepository
 import com.shank.myinstagram.data.firebase.FirebaseNotificationsRepository
+import com.shank.myinstagram.data.firebase.FirebaseSearchRepository
 import com.shank.myinstagram.screens.notification.NotificationsCreator
+import com.shank.myinstagram.screens.search.SearchPostsCreator
 
 //наш синглтон
 class InstagramApp: Application() {
@@ -14,11 +16,15 @@ class InstagramApp: Application() {
     val usersRepo by lazy { FireBaseUsersRepository() }
     val feedPostsRepo by lazy { FirebaseFeedPostsRepository() }
     val notificationRepo by lazy { FirebaseNotificationsRepository() }
+    val searchRepo by lazy { FirebaseSearchRepository() }
     val authManager by lazy { FirebaseAuthManager() }
 
     override fun onCreate() {
         super.onCreate()
         //создаем NotificationCreator
         NotificationsCreator(notificationRepo, usersRepo, feedPostsRepo)
+
+        //создаем SearchPostsCreator
+        SearchPostsCreator(searchRepo)
     }
 }

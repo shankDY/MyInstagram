@@ -3,6 +3,7 @@ package com.shank.myinstagram.screens.share
 import android.net.Uri
 import com.google.android.gms.tasks.OnFailureListener
 import com.google.android.gms.tasks.Tasks
+import com.shank.myinstagram.common.SingleLiveEvent
 import com.shank.myinstagram.data.FeedPostsRepository
 import com.shank.myinstagram.data.UsersRepository
 import com.shank.myinstagram.model.FeedPost
@@ -13,6 +14,8 @@ class ShareViewModel(private val feedPostRepo: FeedPostsRepository,
                      private val usersRepo: UsersRepository,
                      onFailureListener: OnFailureListener): BaseViewModel(onFailureListener) {
 
+    private val _shareCompletedEvent = SingleLiveEvent<Unit>()
+    val shareCompletedEvent = _shareCompletedEvent
     val user = usersRepo.getUser()
 
     fun share(user: User, imageUri: Uri?, caption: String) {
@@ -22,7 +25,9 @@ class ShareViewModel(private val feedPostRepo: FeedPostsRepository,
                         usersRepo.setUserImage(user.uid, downloadUrl!!),
                         feedPostRepo.createFeedpost(user.uid, mkFeedPost(user, caption,
                                 downloadUrl.toString()))
-                )
+                ).addOnSuccessListener {
+                    _shareCompletedEvent.call()
+                }
             }.addOnFailureListener(onFailureListener)
         }
     }

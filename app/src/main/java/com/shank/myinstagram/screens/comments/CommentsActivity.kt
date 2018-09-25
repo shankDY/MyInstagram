@@ -8,6 +8,7 @@ import android.support.v7.widget.LinearLayoutManager
 import com.shank.myinstagram.R
 import com.shank.myinstagram.model.User
 import com.shank.myinstagram.screens.common.BaseActivity
+import com.shank.myinstagram.screens.common.loadUserPhoto
 import com.shank.myinstagram.screens.common.setupAuthGuard
 import kotlinx.android.synthetic.main.activity_comments.*
 
@@ -38,6 +39,8 @@ class CommentsActivity: BaseActivity(){
             viewModel.user.observe(this, Observer{
                 it?.let {
                     mUser = it
+                    //подгружаем фотку юзера в imagView, перед вводом коммента
+                    user_photo.loadUserPhoto(mUser.photo)
                 }
             })
             viewModel.comments.observe(this, Observer {

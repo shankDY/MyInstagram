@@ -52,6 +52,7 @@
     <string name="liked_your_post">Liked your post:</string>
     <string name="started_following_you">Started following you:</string>
     <string name="commented">Commented:</string>
+    <string name="search">Search</string>
 
     <!-- для соглосования окончаний с разным количеством
       %d означает, что можно поставить числовое значение-->

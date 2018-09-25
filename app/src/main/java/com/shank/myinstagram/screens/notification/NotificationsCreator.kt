@@ -5,6 +5,7 @@ import android.arch.lifecycle.LifecycleOwner
 import android.arch.lifecycle.LifecycleRegistry
 import android.arch.lifecycle.Observer
 import android.util.Log
+import com.shank.myinstagram.common.BaseEventListener
 import com.shank.myinstagram.common.Event
 import com.shank.myinstagram.common.EventBus
 import com.shank.myinstagram.data.FeedPostsRepository
@@ -20,12 +21,9 @@ import com.shank.myinstagram.model.NotificationType
 //данный класс будет слушать наши events
 class NotificationsCreator(private val notificationsRepo: NotificationsRepository,
                            private val usersRepo: UsersRepository,
-                           private val feedPostsRepo: FeedPostsRepository) : LifecycleOwner {
-    private val lifecycleRegister = LifecycleRegistry(this)
+                           private val feedPostsRepo: FeedPostsRepository) : BaseEventListener() {
 
     init {
-        lifecycleRegister.markState(Lifecycle.State.CREATED)
-        lifecycleRegister.markState(Lifecycle.State.STARTED)
 
         //слушаем события
         EventBus.events.observe(this, Observer {
@@ -99,8 +97,6 @@ class NotificationsCreator(private val notificationsRepo: NotificationsRepositor
 
     //получаем пользователя по uid
     private fun getUser(uid: String) = usersRepo.getUser(uid)
-
-    override fun getLifecycle(): Lifecycle = lifecycleRegister
 
     companion object {
         const val TAG = "NotificationsCreator"

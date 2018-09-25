@@ -55,6 +55,10 @@ class ProfileActivity : BaseActivity() {
                 it?.let {
                     profile_image.loadUserPhoto(it.photo)
                     username_text.text = it.username
+                    //количество фоловеров
+                    followers_count_text.text = it.followers.size.toString()
+                    //количество подписок
+                    following_count_text.text = it.follows.size.toString()
                 }
             })
 
@@ -62,6 +66,8 @@ class ProfileActivity : BaseActivity() {
             viewModel.images.observe(this, Observer {
                 it?.let{images ->
                   mAdapter.updateImages(images)
+                    //количество постов(соответствует количеству картинок)
+                    posts_count_text.text = images.size.toString()
                 }
             })
         }

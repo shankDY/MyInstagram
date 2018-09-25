@@ -1,5 +1,6 @@
 package com.shank.myinstagram.screens.share
 
+import android.arch.lifecycle.Observer
 import android.content.Intent
 import android.os.Bundle
 import android.util.Log
@@ -22,13 +23,13 @@ class ShareActivity : BaseActivity() {
         setContentView(R.layout.activity_share)
         Log.d(TAG, "onCreate")
 
-        back_image.setOnClickListener { finish() }// кнопка назад.
-        share_text.setOnClickListener { share() }
-
 
         setupAuthGuard {
             mViewModel = initViewModel()
             mFirebase = FirebaseHelper(this)
+
+            back_image.setOnClickListener { finish() }// кнопка назад.
+            share_text.setOnClickListener { share() }
 
             //по старту активити будет открываться камера. и получать фото
             mCamera = CameraHelper(this)
@@ -39,6 +40,8 @@ class ShareActivity : BaseActivity() {
                     mUser = it
                 }
             })
+
+            mViewModel.shareCompletedEvent.observe(this, Observer { finish() })
         }
     }
 

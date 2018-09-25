@@ -55,6 +55,7 @@
         android:orientation="horizontal" >
 
         <de.hdodenhof.circleimageview.CircleImageView
+            android:id="@+id/user_photo"
             style="@style/icon"
             android:src="@drawable/person"/>
 
