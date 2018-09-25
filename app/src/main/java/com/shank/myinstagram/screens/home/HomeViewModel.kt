@@ -18,13 +18,18 @@ class HomeViewModel(onFailureListener: OnFailureListener,
     val goToCommentsScreen = _goToCommentsScreen
 
     fun init(uid: String) {
-        //инифциализация uid
-        this.uid = uid
+        //делаем проверку, что наши lateinit переменные инициализированы или нет,
+        // чтобы не создавать лишних объектов
+        if (!this::uid.isInitialized) {
 
-        //загружает feedposts и сортирует их по дате добавления
-        feedPosts = feedPostsRepo.getFeedPosts(uid).map {
-            //сортируем посты по дате добавления
-            it.sortedByDescending { it.timestampDate() }
+            //инифциализация uid
+            this.uid = uid
+
+            //загружает feedposts и сортирует их по дате добавления
+            feedPosts = feedPostsRepo.getFeedPosts(uid).map {
+                //сортируем посты по дате добавления
+                it.sortedByDescending { it.timestampDate() }
+            }
         }
     }
     //переключатель лайков

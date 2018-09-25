@@ -20,37 +20,41 @@ class ProfileActivity : BaseActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_profile)
-        setupBottomNavigation(4)
         Log.d(TAG, "onCreate")
-
-        edit_profile_btn.setOnClickListener {
-            //получаем ссылку на нужный нам класс с помощью :: (рефлексия котлин)
-            val intent = Intent(this, EditProfileActivity::class.java)
-            startActivity(intent)
-        }
-
-        settings_image.setOnClickListener{
-            val intent = Intent(this, ProfileSettingsActivity::class.java)
-            startActivity(intent)
-        }
-
-        add_friends_image.setOnClickListener {
-
-            val intent = Intent(this, AddFriendsActivity::class.java)
-            startActivity(intent)
-        }
-
-        //создали табличку на 3 колонки
-        //layoutManager отвечает за отображение Recycler(кастомизировать отображение)
-        images_recycler.layoutManager = GridLayoutManager(this,3 )
-        mAdapter = ImagesAdapter()
-        images_recycler.adapter = mAdapter
 
 
         setupAuthGuard {uid ->
+
+            setupBottomNavigation(uid,4)
+
             val viewModel = initViewModel<ProfileViewModel>()
             //передаем  uid viewModel
             viewModel.init(uid)
+
+
+            edit_profile_btn.setOnClickListener {
+                //получаем ссылку на нужный нам класс с помощью :: (рефлексия котлин)
+                val intent = Intent(this, EditProfileActivity::class.java)
+                startActivity(intent)
+            }
+
+            settings_image.setOnClickListener{
+                val intent = Intent(this, ProfileSettingsActivity::class.java)
+                startActivity(intent)
+            }
+
+            add_friends_image.setOnClickListener {
+
+                val intent = Intent(this, AddFriendsActivity::class.java)
+                startActivity(intent)
+            }
+
+            //создали табличку на 3 колонки
+            //layoutManager отвечает за отображение Recycler(кастомизировать отображение)
+            images_recycler.layoutManager = GridLayoutManager(this,3 )
+            mAdapter = ImagesAdapter()
+            images_recycler.adapter = mAdapter
+
             viewModel.user.observe(this, Observer {
                 it?.let {
                     profile_image.loadUserPhoto(it.photo)

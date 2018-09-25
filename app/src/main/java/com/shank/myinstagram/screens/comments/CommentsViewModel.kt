@@ -18,10 +18,12 @@ class CommentsViewModel(private val feedPostsRepo: FeedPostsRepository,
     // id поста
     private lateinit var postId: String
 
-    fun init(postId: String){
-        this.postId = postId
-        //иннициализация списка комеентариев
-         comments = feedPostsRepo.getComments(postId)
+    fun init(postId: String) {
+        if (!this::postId.isInitialized) {
+            this.postId = postId
+            //иннициализация списка комеентариев
+            comments = feedPostsRepo.getComments(postId)
+        }
     }
 
     fun createComment(text: String, user: User){

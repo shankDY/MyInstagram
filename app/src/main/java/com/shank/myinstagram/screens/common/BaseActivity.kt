@@ -15,7 +15,7 @@ import com.shank.myinstagram.screens.login.LoginActivity
 // то тут не должно быть навигации
 abstract class BaseActivity: AppCompatActivity() {
 
-   protected lateinit var commonViewModel: CommonViewModel
+   lateinit var commonViewModel: CommonViewModel
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -42,7 +42,7 @@ abstract class BaseActivity: AppCompatActivity() {
 
     //reified позволяет передать тип, не указывая его явно, есть только в inline функции
     //inline функция, инлайнится в то место, где вызывана
-   protected inline fun <reified T: BaseViewModel> initViewModel() =
+   inline fun <reified T: BaseViewModel> initViewModel() =
         ViewModelProviders.of(this, ViewModelFactory(
                 application as InstagramApp,
                 commonViewModel,

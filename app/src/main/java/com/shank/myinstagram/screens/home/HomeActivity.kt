@@ -21,12 +21,15 @@ class HomeActivity : BaseActivity(), FeedAdapter.Listener {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_home)
         Log.d(TAG, "onCreate")
-        setupBottomNavigation(0)
 
         mAdapter = FeedAdapter(this)
         feed_recycler.adapter = mAdapter
         feed_recycler.layoutManager = LinearLayoutManager(this)
         setupAuthGuard { uid ->
+
+            //инициализация navigationBottom
+            setupBottomNavigation(uid,0)
+
             //создали viewModel
             mViewModel = initViewModel()
             //вызываем метод init и передаем uid юзера авторизованного

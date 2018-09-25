@@ -10,8 +10,10 @@ class ProfileViewModel(private val usersRepo:UsersRepository,
     val user = usersRepo.getUser()
     lateinit var  images: LiveData<List<String>>
 
-    fun init(uid: String){
-        //создаем getImagesLiveData
-        images = usersRepo.getImages(uid)
+    fun init(uid: String) {
+        if (!this::images.isInitialized) {
+            //создаем getImagesLiveData
+            images = usersRepo.getImages(uid)
+        }
     }
 }
