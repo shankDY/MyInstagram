@@ -3,7 +3,6 @@ package com.shank.myinstagram.data
 import android.arch.lifecycle.LiveData
 import android.net.Uri
 import com.google.android.gms.tasks.Task
-import com.shank.myinstagram.model.FeedPost
 import com.shank.myinstagram.model.User
 
 //данный репозиторий работает с юзерами(такова практика, чтобы функции которые работают с

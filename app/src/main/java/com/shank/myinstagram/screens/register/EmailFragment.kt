@@ -28,6 +28,7 @@ class EmailFragment : Fragment(){
         // вызываем метод , который позволит делать кнопку аутивной , если нужные поля заполнены
         coordinateBtnAndInputs(nextbutton, email_input_reg)
 
+
         nextbutton.setOnClickListener {
             val email = email_input_reg.text.toString()
             mListener.OnNext(email)// передаем наш email в активити

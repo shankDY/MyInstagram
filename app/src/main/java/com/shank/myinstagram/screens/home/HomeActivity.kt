@@ -25,6 +25,7 @@ class HomeActivity : BaseActivity(), FeedAdapter.Listener {
         mAdapter = FeedAdapter(this)
         feed_recycler.adapter = mAdapter
         feed_recycler.layoutManager = LinearLayoutManager(this)
+
         setupAuthGuard { uid ->
 
             //инициализация navigationBottom
@@ -36,9 +37,7 @@ class HomeActivity : BaseActivity(), FeedAdapter.Listener {
             mViewModel.init(uid)
 
             mViewModel.feedPosts.observe(this, Observer{it?.let{
-                mAdapter.updatePosts(it)
-
-            }
+                mAdapter.updatePosts(it) }
             })
             //переходим в окно написания комментария
             mViewModel.goToCommentsScreen.observe(this, Observer {

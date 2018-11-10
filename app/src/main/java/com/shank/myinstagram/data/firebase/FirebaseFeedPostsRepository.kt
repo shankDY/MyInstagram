@@ -133,7 +133,7 @@ class FirebaseFeedPostsRepository: FeedPostsRepository {
     private fun DataSnapshot.asFeedPost(): FeedPost? =
             getValue(FeedPost::class.java)?.copy(id = key!!)
 
-    // // функция расширения, с помощью которой получаем замапенный список rjvtynjd,
+    // // функция расширения, с помощью которой получаем замапенный список комментов,
     // где id комента - ключ
     fun DataSnapshot.asComment(): Comment? =
             getValue(Comment::class.java)?.copy(id = key!!)

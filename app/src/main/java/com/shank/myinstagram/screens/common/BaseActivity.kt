@@ -1,7 +1,6 @@
 package com.shank.myinstagram.screens.common
 
 import android.arch.lifecycle.Observer
-import android.arch.lifecycle.ViewModel
 import android.arch.lifecycle.ViewModelProviders
 import android.content.Intent
 import android.content.pm.ActivityInfo

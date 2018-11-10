@@ -5,15 +5,16 @@ import android.content.Intent
 import android.os.Bundle
 import android.util.Log
 import com.shank.myinstagram.R
-import com.shank.myinstagram.data.firebase.common.*
 import com.shank.myinstagram.model.User
-import com.shank.myinstagram.screens.common.*
+import com.shank.myinstagram.screens.common.BaseActivity
+import com.shank.myinstagram.screens.common.CameraHelper
+import com.shank.myinstagram.screens.common.loadImage
+import com.shank.myinstagram.screens.common.setupAuthGuard
 import kotlinx.android.synthetic.main.activity_share.*
 
 class ShareActivity : BaseActivity() {
 
     private lateinit var mCamera: CameraHelper
-    private lateinit var mFirebase: FirebaseHelper
     private lateinit var mUser: User
 
     private lateinit var mViewModel: ShareViewModel
@@ -26,7 +27,6 @@ class ShareActivity : BaseActivity() {
 
         setupAuthGuard {
             mViewModel = initViewModel()
-            mFirebase = FirebaseHelper(this)
 
             back_image.setOnClickListener { finish() }// кнопка назад.
             share_text.setOnClickListener { share() }
